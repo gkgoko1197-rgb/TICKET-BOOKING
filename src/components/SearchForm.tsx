@@ -91,7 +91,7 @@ export default function SearchForm() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col lg:flex-row items-center bg-background border border-yellow-500 rounded-lg"
+            className="flex flex-col md:flex-row items-center bg-background border border-yellow-500 rounded-lg"
           >
             <FormField
               control={form.control}
@@ -111,7 +111,7 @@ export default function SearchForm() {
                 </FormItem>
               )}
             />
-            <Separator orientation="vertical" className="h-8 hidden lg:block" />
+            <Separator orientation="vertical" className="h-8 hidden md:block" />
             <FormField
               control={form.control}
               name="dates"
@@ -157,7 +157,7 @@ export default function SearchForm() {
                 </FormItem>
               )}
             />
-            <Separator orientation="vertical" className="h-8 hidden lg:block" />
+            <Separator orientation="vertical" className="h-8 hidden md:block" />
              <Popover>
                <PopoverTrigger asChild>
                 <Button variant="ghost" className="flex-1 w-full justify-start font-normal h-14 text-base text-left">
@@ -201,8 +201,8 @@ export default function SearchForm() {
                 </div>
               </PopoverContent>
             </Popover>
-            <Button type="submit" size="lg" className="h-12 text-base font-bold m-1">
-              <Search className="h-5 w-5 lg:hidden mr-2" />
+            <Button type="submit" size="lg" className="h-12 text-base font-bold m-1 w-full md:w-auto">
+              <Search className="h-5 w-5 md:hidden mr-2" />
               Search
             </Button>
           </form>
