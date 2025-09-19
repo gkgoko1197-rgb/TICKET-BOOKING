@@ -12,6 +12,7 @@ import {
   Users,
   Minus,
   Plus,
+  MapPin,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -29,10 +30,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  PopoverAnchor
 } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "./ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 
 const FormSchema = z.object({
   destination: z.string().min(1, { message: "Destination is required." }),
@@ -47,9 +50,18 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
+const trendingDestinations = [
+    { name: 'Chennai', country: 'India' },
+    { name: 'Bangalore', country: 'India' },
+    { name: 'Pondicherry', country: 'India' },
+    { name: 'Coimbatore', country: 'India' },
+    { name: 'Madurai', country: 'India' },
+];
+
 export default function SearchForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const [destinationPopover, setDestinationPopover] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -88,43 +100,71 @@ export default function SearchForm() {
 
   return (
     <Card className="w-full max-w-6xl mx-auto shadow-lg">
-      <CardContent className="p-2">
+      <CardContent className="p-0">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col md:flex-row items-center bg-background border border-yellow-500 rounded-lg"
+            className="grid grid-cols-1 md:grid-cols-[2fr_2fr_2fr_auto] items-center bg-background border-2 border-yellow-400 rounded-lg"
           >
-            <FormField
-              control={form.control}
-              name="destination"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <div className="relative">
-                      <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        placeholder="Where are you going?"
-                        className="h-14 pl-10 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-base"
-                        {...field}
-                      />
+            <Popover open={destinationPopover} onOpenChange={setDestinationPopover}>
+                <PopoverAnchor asChild>
+                    <FormField
+                    control={form.control}
+                    name="destination"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormControl>
+                            <div className="relative">
+                            <BedDouble className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input
+                                placeholder="Where are you going?"
+                                className="h-16 pl-12 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-base rounded-r-none"
+                                {...field}
+                                onFocus={() => setDestinationPopover(true)}
+                            />
+                            </div>
+                        </FormControl>
+                        </FormItem>
+                    )}
+                    />
+                </PopoverAnchor>
+                <PopoverContent className="w-[var(--radix-popover-trigger-width)] mt-2" onOpenAutoFocus={(e) => e.preventDefault()}>
+                    <h4 className="font-semibold px-4 pb-2">Trending destinations</h4>
+                    <div className="grid gap-1">
+                        {trendingDestinations.map((dest) => (
+                            <Button 
+                                key={dest.name} 
+                                variant="ghost" 
+                                className="justify-start"
+                                onClick={() => {
+                                    form.setValue("destination", dest.name);
+                                    setDestinationPopover(false);
+                                }}
+                            >
+                                <MapPin className="mr-2"/>
+                                <div>
+                                    <p className="font-semibold">{dest.name}</p>
+                                    <p className="text-xs text-muted-foreground text-left">{dest.country}</p>
+                                </div>
+                            </Button>
+                        ))}
                     </div>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                </PopoverContent>
+            </Popover>
+
             <Separator orientation="vertical" className="h-8 hidden md:block" />
             <FormField
               control={form.control}
               name="dates"
               render={({ field }) => (
-                <FormItem className="flex-1">
+                <FormItem>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={"ghost"}
                           className={cn(
-                            "w-full justify-start text-left font-normal h-14 text-base",
+                            "w-full justify-start text-left font-normal h-16 text-base rounded-none",
                             !field.value?.from && "text-muted-foreground"
                           )}
                         >
@@ -161,7 +201,7 @@ export default function SearchForm() {
             <Separator orientation="vertical" className="h-8 hidden md:block" />
              <Popover>
                <PopoverTrigger asChild>
-                <Button variant="ghost" className="flex-1 w-full justify-start font-normal h-14 text-base text-left">
+                <Button variant="ghost" className="w-full justify-start font-normal h-16 text-base text-left rounded-none">
                   <Users className="mr-2 h-4 w-4" />
                   <div>
                     {form.watch("adults")} adults · {form.watch("children")} children · {form.watch("rooms")} room
@@ -202,8 +242,8 @@ export default function SearchForm() {
                 </div>
               </PopoverContent>
             </Popover>
-            <Button type="submit" size="lg" className="h-12 text-base font-bold m-1 w-full md:w-auto">
-              <Search className="h-5 w-5 md:hidden mr-2" />
+            <Button type="submit" size="lg" className="h-full text-lg font-bold rounded-l-none w-full md:w-auto px-10">
+              <Search className="h-6 w-6 md:hidden mr-2" />
               Search
             </Button>
           </form>
