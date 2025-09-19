@@ -77,9 +77,9 @@ export default function SearchForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 bg-yellow-400 border-4 border-yellow-400 rounded-md"
+        className="flex flex-col lg:flex-row items-center bg-yellow-400 border-4 border-yellow-400 rounded-md"
       >
-        <div className="lg:col-span-4">
+        <div className="w-full">
           <FormField
             control={form.control}
             name="destination"
@@ -90,18 +90,18 @@ export default function SearchForm() {
                     <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
                       placeholder="Where are you going?"
-                      className="pl-10 h-12 rounded-none rounded-l-sm border-0"
+                      className="pl-10 h-12 rounded-none lg:rounded-l-sm border-0 w-full"
                       {...field}
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="pl-2"/>
+                <FormMessage className="pl-2 lg:hidden"/>
               </FormItem>
             )}
           />
         </div>
 
-        <div className="lg:col-span-4">
+        <div className="w-full">
           <FormField
             control={form.control}
             name="dates"
@@ -113,7 +113,7 @@ export default function SearchForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal h-12 rounded-none",
+                          "w-full justify-start text-left font-normal h-12 rounded-none border-t lg:border-t-0 lg:border-l",
                           !field.value?.from && "text-muted-foreground"
                         )}
                       >
@@ -150,7 +150,7 @@ export default function SearchForm() {
           />
         </div>
         
-        <div className="lg:col-span-3">
+        <div className="w-full">
           <FormField
             control={form.control}
             name="guests"
@@ -159,7 +159,7 @@ export default function SearchForm() {
                 <FormControl>
                   <div className="relative">
                     <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input type="number" placeholder="Guests" className="pl-10 h-12 rounded-none border-0" min="1" {...field} />
+                    <Input type="number" placeholder="Guests" className="pl-10 h-12 rounded-none border-t lg:border-t-0 lg:border-l w-full" min="1" {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -168,7 +168,8 @@ export default function SearchForm() {
           />
         </div>
 
-        <Button type="submit" className="w-full lg:col-span-1 h-12 rounded-none rounded-r-sm text-lg">
+        <Button type="submit" className="w-full lg:w-auto h-12 rounded-none lg:rounded-r-sm text-lg flex-shrink-0 px-8">
+           <Search className="h-5 w-5 lg:hidden mr-2" />
            Search
         </Button>
       </form>
