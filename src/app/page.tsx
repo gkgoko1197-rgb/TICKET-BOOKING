@@ -39,11 +39,7 @@ export default function Home() {
         </div>
       </div>
       <div className="container mx-auto px-4 -mt-16 z-20 relative">
-        <Card className="w-full max-w-6xl mx-auto shadow-lg">
-          <CardContent className="p-2">
-            <SearchForm />
-          </CardContent>
-        </Card>
+        <SearchForm />
       </div>
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-3xl font-headline font-bold mb-6">Browse by property type</h2>
