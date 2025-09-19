@@ -64,7 +64,7 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
         <h2 className="text-3xl font-headline font-bold">Trending destinations</h2>
         <p className="text-muted-foreground mb-6">Travelers searching for India also booked these</p>
         <div className="flex flex-col gap-4">
