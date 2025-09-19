@@ -254,7 +254,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="hidden sm:block">
-                    <Image src="https://images.unsplash.com/photo-1668463876833-339717e58c4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxN3x8cG5nJTIwZ2lmdCUyMGJveHxlbnwwfHx8fDE3NTgyODUxNTR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Genius Logo" width={80} height={80} data-ai-hint="gift box" />
+                    <Image src="https://img.freepik.com/free-photo/3d-render-blue-gift-box-with-ribbon-male-package_107791-16197.jpg?semt=ais_incoming&w=740&q=80" alt="Genius Logo" width={80} height={80} data-ai-hint="gift box" />
                 </div>
             </CardContent>
         </Card>
