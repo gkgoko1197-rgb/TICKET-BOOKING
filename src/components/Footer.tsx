@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
