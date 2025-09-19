@@ -5,6 +5,7 @@ import { placeholderImages } from '@/lib/placeholder-images.json';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CalendarCheck, Globe, Headset, ThumbsUp, ArrowRight } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const propertyTypes = [
   { name: 'Hotels', image: placeholderImages.find(p => p.id === 'hotel-2'), hint: 'hotel room' },
@@ -43,6 +44,41 @@ const whyStayFinder = [
       description: "We're always here to help",
     },
   ];
+
+const offers = [
+  {
+    title: 'Quick escape, quality time',
+    description: 'Save up to 20% with a Getaway Deal',
+    buttonText: 'Save on stays',
+    imageUrl: 'https://picsum.photos/seed/couple/800/400',
+    imageHint: 'happy couple',
+    type: 'simple'
+  },
+  {
+    title: 'Late Escape Deals',
+    description: 'Go for a good time, not a long time. Squeeze out the last bit of sun with at least 15% off',
+    buttonText: 'Find deals',
+    imageUrl: 'https://picsum.photos/seed/hammock/800/400',
+    imageHint: 'beach hammock',
+    type: 'overlay'
+  },
+  {
+    title: 'Explore New Horizons',
+    description: 'Discover new destinations with our special city break offers.',
+    buttonText: 'Explore cities',
+    imageUrl: 'https://picsum.photos/seed/city-trip/800/400',
+    imageHint: 'european city street',
+    type: 'overlay'
+  },
+  {
+    title: 'Work & Travel',
+    description: 'Find accommodations perfect for your next work-cation.',
+    buttonText: 'Find work-friendly stays',
+    imageUrl: 'https://picsum.photos/seed/work-travel/800/400',
+    imageHint: 'laptop cafe',
+    type: 'simple'
+  }
+];
 
 export default function Home() {
   const heroImage = placeholderImages.find(
@@ -106,33 +142,51 @@ export default function Home() {
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <h2 className="text-3xl font-headline font-bold">Offers</h2>
         <p className="text-muted-foreground mb-6">Promotions, deals, and special offers for you</p>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="flex items-center p-4">
-            <div className="flex-1">
-              <h3 className="font-headline font-bold text-xl mb-2">Quick escape, quality time</h3>
-              <p className="text-muted-foreground mb-4">Save up to 20% with a Getaway Deal</p>
-              <Button className="bg-accent hover:bg-accent/90">Save on stays</Button>
-            </div>
-            <div className="relative w-24 h-24 ml-4">
-              <Image src="https://picsum.photos/seed/couple/200/200" alt="Couple on a boat" fill className="object-cover rounded-md" data-ai-hint="happy couple" />
-            </div>
-          </Card>
-          <Card className="relative overflow-hidden group">
-            <Image src="https://picsum.photos/seed/hammock/800/400" alt="Person in a hammock" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="beach hammock" />
-            <div className="absolute inset-0 bg-black/40"></div>
-            <div className="relative h-full flex flex-col justify-between p-6 text-white">
-                <div>
-                    <p className="text-sm">Late Escape Deals</p>
-                    <h3 className="font-headline font-bold text-2xl mt-1">Go for a good time, not a long time</h3>
-                    <p className="mt-1 text-sm">Squeeze out the last bit of sun with at least 15% off</p>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {offers.map((offer, index) => (
+              <CarouselItem key={index} className="md:basis-1/2">
+                <div className="p-1 h-full">
+                  {offer.type === 'simple' ? (
+                     <Card className="flex items-center p-4 h-full">
+                        <div className="flex-1">
+                          <h3 className="font-headline font-bold text-xl mb-2">{offer.title}</h3>
+                          <p className="text-muted-foreground mb-4">{offer.description}</p>
+                          <Button className="bg-accent hover:bg-accent/90">{offer.buttonText}</Button>
+                        </div>
+                        <div className="relative w-32 h-32 ml-4 flex-shrink-0">
+                          <Image src={offer.imageUrl} alt={offer.title} fill className="object-cover rounded-md" data-ai-hint={offer.imageHint} />
+                        </div>
+                      </Card>
+                  ) : (
+                    <Card className="relative overflow-hidden group h-full">
+                      <Image src={offer.imageUrl} alt={offer.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={offer.imageHint} />
+                      <div className="absolute inset-0 bg-black/40"></div>
+                      <div className="relative h-full flex flex-col justify-between p-6 text-white">
+                          <div>
+                              <h3 className="font-headline font-bold text-2xl mt-1">{offer.title}</h3>
+                              <p className="mt-1 text-sm">{offer.description}</p>
+                          </div>
+                        <Button variant="secondary" className="self-start">{offer.buttonText}</Button>
+                      </div>
+                       <div className="absolute top-1/2 -translate-y-1/2 right-4 bg-white/80 backdrop-blur-sm rounded-full p-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ArrowRight className="w-6 h-6 text-gray-800" />
+                      </div>
+                    </Card>
+                  )}
                 </div>
-              <Button variant="secondary" className="self-start">Find deals</Button>
-            </div>
-             <div className="absolute top-1/2 -translate-y-1/2 right-4 bg-white/80 backdrop-blur-sm rounded-full p-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowRight className="w-6 h-6 text-gray-800" />
-            </div>
-          </Card>
-        </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-[-50px]" />
+          <CarouselNext className="right-[-50px]" />
+        </Carousel>
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-5xl">
