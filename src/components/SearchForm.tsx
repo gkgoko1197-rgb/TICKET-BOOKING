@@ -77,7 +77,7 @@ export default function SearchForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-x-0 gap-y-2 items-center bg-yellow-400 border-4 border-yellow-400 rounded-md"
+        className="flex flex-col gap-2 bg-yellow-400 border-4 border-yellow-400 rounded-md"
       >
         <div className="lg:col-span-4">
           <FormField
@@ -113,7 +113,7 @@ export default function SearchForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal h-12 rounded-none border-x-2 border-yellow-400",
+                          "w-full justify-start text-left font-normal h-12 rounded-none",
                           !field.value?.from && "text-muted-foreground"
                         )}
                       >
