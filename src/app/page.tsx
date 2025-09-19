@@ -126,7 +126,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+      <div className="container mx-auto px-4 py-12 max-w-5xl pt-0">
         <h2 className="text-3xl font-headline font-bold mb-6">Why StayFinder?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {whyStayFinder.map((item) => (
