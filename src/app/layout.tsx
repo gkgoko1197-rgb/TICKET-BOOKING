@@ -3,6 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "StayFinder",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex-grow">{children}</main>
+        <Footer />
         <Toaster />
       </body>
     </html>
