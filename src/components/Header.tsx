@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BedDouble, Plane, Car, Sparkles, Building, CircleHelp, Bell } from "lucide-react";
+import { Home, Plane, Car, Sparkles, Building, CircleHelp, Bell } from "lucide-react";
 import { Button } from "./ui/button";
 
 export default function Header() {
@@ -27,9 +27,9 @@ export default function Header() {
         <div className="pb-2">
               <nav className="flex items-center gap-2">
                   <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
-                      <Link href="/search">
-                          <BedDouble className="mr-2" />
-                          Stays
+                      <Link href="/">
+                          <Home className="mr-2" />
+                          Home
                       </Link>
                   </Button>
                   <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
