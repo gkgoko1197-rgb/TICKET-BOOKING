@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <>
       <div className="relative w-full bg-primary -mt-1">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-5xl">
           <div className="relative z-10 flex flex-col items-start text-left text-white px-4 py-16">
             <h1 className="text-5xl font-headline font-bold mb-4 drop-shadow-lg">
               Find your next stay
