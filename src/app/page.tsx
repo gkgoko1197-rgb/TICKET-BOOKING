@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import SearchForm from '@/components/SearchForm';
@@ -253,7 +254,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="hidden sm:block">
-                    <Image src="https://i.pinimg.com/originals/26/73/cf/2673cf874ed39f562ccefd_d04e18f507.jpg" alt="Genius Logo" width={80} height={80} data-ai-hint="logo gift" />
+                    <Image src="https://images.unsplash.com/photo-1668463876833-339717e58c4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxN3x8cG5nJTIwZ2lmdCUyMGJveHxlbnwwfHx8fDE3NTgyODUxNTR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Genius Logo" width={80} height={80} data-ai-hint="gift box" />
                 </div>
             </CardContent>
         </Card>
