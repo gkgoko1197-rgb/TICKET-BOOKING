@@ -17,12 +17,12 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "./ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 
 const FormSchema = z.object({
   destination: z.string().min(1, { message: "Destination is required." }),
@@ -98,6 +99,7 @@ export default function SearchForm() {
               name="destination"
               render={({ field }) => (
                 <FormItem className="flex-1 w-full">
+                  <FormLabel className="pl-10 text-xs text-muted-foreground">Where are you going?</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
