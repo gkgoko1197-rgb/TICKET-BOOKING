@@ -11,7 +11,7 @@ export default function Footer() {
             <p className="mt-2">Sign up and we'll send the best deals to you</p>
             <div className="mt-4 flex justify-center max-w-md mx-auto">
                 <input type="email" placeholder="Your email address" className="px-4 py-2 w-full rounded-l-md text-gray-800" />
-                <Button className="rounded-l-none bg-blue-600 hover:bg-blue-700">Subscribe</Button>
+                <Button className="rounded-l-none bg-accent hover:bg-accent/90">Subscribe</Button>
             </div>
         </div>
       <div className="container mx-auto px-4 py-8">
