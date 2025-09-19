@@ -104,7 +104,7 @@ export default function SearchForm() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col md:flex-row items-center bg-background border-2 border-yellow-400 rounded-lg overflow-hidden"
+            className="flex flex-col md:flex-row items-stretch bg-white border-2 border-yellow-400 rounded-lg overflow-hidden"
           >
             <div className="w-full flex-1">
                 <Popover open={destinationPopover} onOpenChange={setDestinationPopover}>
@@ -154,7 +154,7 @@ export default function SearchForm() {
                 </Popover>
             </div>
             
-            <Separator orientation="vertical" className="h-8 hidden md:block" />
+            <Separator orientation="vertical" className="h-auto hidden md:block" />
             <div className="w-full flex-1">
                 <FormField
                 control={form.control}
@@ -202,7 +202,7 @@ export default function SearchForm() {
                 )}
                 />
             </div>
-            <Separator orientation="vertical" className="h-8 hidden md:block" />
+            <Separator orientation="vertical" className="h-auto hidden md:block" />
 
             <div className="w-full flex-1">
                 <Popover>
@@ -249,7 +249,7 @@ export default function SearchForm() {
                 </PopoverContent>
                 </Popover>
             </div>
-            <Button type="submit" size="lg" className="h-full text-lg font-bold w-full md:w-auto px-10 rounded-none">
+            <Button type="submit" size="lg" className="h-full text-lg font-bold w-full md:w-auto px-10 rounded-none bg-accent hover:bg-accent/90 text-accent-foreground">
               <Search className="h-6 w-6 md:hidden mr-2" />
               Search
             </Button>
@@ -259,5 +259,3 @@ export default function SearchForm() {
     </Card>
   );
 }
-
-    
