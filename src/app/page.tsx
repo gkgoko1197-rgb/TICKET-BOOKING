@@ -139,7 +139,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+      <div className="container mx-auto px-4 py-12 max-w-5xl pt-0">
         <h2 className="text-3xl font-headline font-bold">Offers</h2>
         <p className="text-muted-foreground mb-6">Promotions, deals, and special offers for you</p>
         <Carousel
