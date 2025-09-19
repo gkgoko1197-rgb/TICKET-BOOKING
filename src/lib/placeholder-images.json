@@ -1,3 +1,82 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A stunning view of a tropical resort with a pool and ocean in the background.",
+      "imageUrl": "https://picsum.photos/seed/hero/1920/1080",
+      "imageHint": "tropical resort"
+    },
+    {
+      "id": "hotel-1",
+      "description": "Exterior view of a modern city hotel at dusk.",
+      "imageUrl": "https://picsum.photos/seed/h1/600/400",
+      "imageHint": "modern hotel"
+    },
+    {
+      "id": "hotel-2",
+      "description": "A cozy hotel room with a large bed and city view.",
+      "imageUrl": "https://picsum.photos/seed/h2/600/400",
+      "imageHint": "hotel room"
+    },
+    {
+      "id": "hotel-3",
+      "description": "A luxury resort with a swimming pool surrounded by palm trees.",
+      "imageUrl": "https://picsum.photos/seed/h3/600/400",
+      "imageHint": "luxury resort"
+    },
+    {
+      "id": "apartment-1",
+      "description": "A stylish apartment living room with modern furniture.",
+      "imageUrl": "https://picsum.photos/seed/a1/600/400",
+      "imageHint": "modern apartment"
+    },
+    {
+      "id": "apartment-2",
+      "description": "A bright and airy kitchen in a vacation rental.",
+      "imageUrl": "https://picsum.photos/seed/a2/600/400",
+      "imageHint": "apartment kitchen"
+    },
+    {
+      "id": "villa-1",
+      "description": "A beautiful villa with a private pool and garden.",
+      "imageUrl": "https://picsum.photos/seed/v1/600/400",
+      "imageHint": "private villa"
+    },
+    {
+      "id": "cabin-1",
+      "description": "A rustic wooden cabin in a forest setting.",
+      "imageUrl": "https://picsum.photos/seed/c1/600/400",
+      "imageHint": "forest cabin"
+    },
+    {
+      "id": "resort-1",
+      "description": "Beachfront resort with umbrellas and lounge chairs.",
+      "imageUrl": "https://picsum.photos/seed/r1/600/400",
+      "imageHint": "beach resort"
+    },
+    {
+      "id": "hostel-1",
+      "description": "A clean and modern hostel dormitory room.",
+      "imageUrl": "https://picsum.photos/seed/ho1/600/400",
+      "imageHint": "hostel room"
+    },
+    {
+      "id": "guesthouse-1",
+      "description": "A charming guesthouse with a garden.",
+      "imageUrl": "https://picsum.photos/seed/g1/600/400",
+      "imageHint": "charming guesthouse"
+    },
+    {
+      "id": "hotel-lobby",
+      "description": "A grand hotel lobby with a luxurious chandelier.",
+      "imageUrl": "https://picsum.photos/seed/lobby/600/400",
+      "imageHint": "hotel lobby"
+    },
+    {
+      "id": "hotel-pool",
+      "description": "An inviting hotel swimming pool at sunset.",
+      "imageUrl": "https://picsum.photos/seed/pool/600/400",
+      "imageHint": "hotel pool"
+    }
+  ]
 }
