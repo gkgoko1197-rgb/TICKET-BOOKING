@@ -38,7 +38,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 -mt-16 z-20 relative">
+      <div className="container mx-auto px-4 -mt-16 z-20 relative flex justify-center">
         <SearchForm />
       </div>
       <div className="container mx-auto px-4 py-12">

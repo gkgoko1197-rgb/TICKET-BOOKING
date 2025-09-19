@@ -23,7 +23,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,7 +31,6 @@ import {
   PopoverTrigger,
   PopoverAnchor
 } from "@/components/ui/popover";
-import { useToast } from "@/hooks/use-toast";
 import { Separator } from "./ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
@@ -60,7 +58,6 @@ const trendingDestinations = [
 
 export default function SearchForm() {
   const router = useRouter();
-  const { toast } = useToast();
   const [destinationPopover, setDestinationPopover] = useState(false);
 
   const form = useForm<FormValues>({
@@ -76,19 +73,10 @@ export default function SearchForm() {
   function onSubmit(data: FormValues) {
     const { destination, dates, adults, children, rooms } = data;
 
-    if (!dates.from || !dates.to) {
-      toast({
-        title: "Invalid dates",
-        description: "Please select both check-in and check-out dates.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const params = new URLSearchParams({
       destination,
-      checkin: format(dates.from, "yyyy-MM-dd"),
-      checkout: format(dates.to, "yyyy-MM-dd"),
+      checkin: dates.from ? format(dates.from, "yyyy-MM-dd") : '',
+      checkout: dates.to ? format(dates.to, "yyyy-MM-dd") : '',
       guests: `${adults + children}`,
       adults: String(adults),
       children: String(children),
@@ -106,7 +94,7 @@ export default function SearchForm() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col md:flex-row items-stretch bg-white border-2 border-yellow-400 rounded-lg overflow-hidden"
           >
-            <div className="w-full flex-1">
+            <div className="flex-1">
                 <Popover open={destinationPopover} onOpenChange={setDestinationPopover}>
                     <PopoverAnchor asChild>
                         <FormField
@@ -155,7 +143,7 @@ export default function SearchForm() {
             </div>
             
             <Separator orientation="vertical" className="h-auto hidden md:block" />
-            <div className="w-full flex-1">
+            <div className="flex-1">
                 <FormField
                 control={form.control}
                 name="dates"
@@ -204,7 +192,7 @@ export default function SearchForm() {
             </div>
             <Separator orientation="vertical" className="h-auto hidden md:block" />
 
-            <div className="w-full flex-1">
+            <div className="flex-1">
                 <Popover>
                 <PopoverTrigger asChild>
                     <Button variant="ghost" className="w-full justify-start font-normal h-16 text-base text-left">
@@ -249,7 +237,7 @@ export default function SearchForm() {
                 </PopoverContent>
                 </Popover>
             </div>
-            <Button type="submit" size="lg" className="h-full text-lg font-bold w-full md:w-auto px-10 rounded-none bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button type="submit" size="lg" className="h-auto text-lg font-bold w-full md:w-auto px-10 rounded-none bg-accent hover:bg-accent/90 text-accent-foreground">
               <Search className="h-6 w-6 md:hidden mr-2" />
               Search
             </Button>
