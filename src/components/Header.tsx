@@ -1,32 +1,62 @@
 import Link from "next/link";
-import { BedDouble, Bot } from "lucide-react";
+import { BedDouble, Plane, Car, Sparkles, Building, CircleHelp, Bell } from "lucide-react";
 import { Button } from "./ui/button";
 
 export default function Header() {
   return (
-    <header className="bg-card shadow-md">
+    <header className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <BedDouble className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-headline font-bold text-foreground">
+          <span className="text-2xl font-headline font-bold">
             StayFinder
           </span>
         </Link>
-        <nav className="flex items-center gap-2">
-          <Button variant="ghost" asChild>
-            <Link href="/search">
-              Search
-            </Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="/admin/form-generator">
-              <Bot className="mr-2" />
-              AI Tools
-            </Link>
-          </Button>
-          <Button>Sign In</Button>
-        </nav>
+        <div className="flex items-center gap-4">
+            <Button variant="ghost" className="hover:bg-white/10">
+                <CircleHelp className="mr-2"/>
+            </Button>
+            <Button variant="ghost" className="hover:bg-white/10">
+                <Bell className="mr-2"/>
+            </Button>
+            <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary">List your property</Button>
+            <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Register</Button>
+            <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Sign In</Button>
+        </div>
       </div>
+       <div className="container mx-auto px-4 pb-2">
+            <nav className="flex items-center gap-2">
+                <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                    <Link href="/search">
+                        <BedDouble className="mr-2" />
+                        Stays
+                    </Link>
+                </Button>
+                <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                    <Link href="#">
+                        <Plane className="mr-2" />
+                        Flights
+                    </Link>
+                </Button>
+                 <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                    <Link href="#">
+                        <Car className="mr-2" />
+                        Car rentals
+                    </Link>
+                </Button>
+                 <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                    <Link href="#">
+                        <Sparkles className="mr-2" />
+                        Attractions
+                    </Link>
+                </Button>
+                <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                    <Link href="#">
+                        <Building className="mr-2" />
+                        Airport taxis
+                    </Link>
+                </Button>
+            </nav>
+        </div>
     </header>
   );
 }

@@ -77,9 +77,9 @@ export default function SearchForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-12 gap-2 items-start"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-x-0 gap-y-2 items-center bg-yellow-400 border-4 border-yellow-400 rounded-md"
       >
-        <div className="md:col-span-4">
+        <div className="lg:col-span-4">
           <FormField
             control={form.control}
             name="destination"
@@ -90,18 +90,18 @@ export default function SearchForm() {
                     <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
                       placeholder="Where are you going?"
-                      className="pl-10"
+                      className="pl-10 h-12 rounded-none rounded-l-sm border-0"
                       {...field}
                     />
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="pl-2"/>
               </FormItem>
             )}
           />
         </div>
 
-        <div className="md:col-span-4">
+        <div className="lg:col-span-4">
           <FormField
             control={form.control}
             name="dates"
@@ -113,7 +113,7 @@ export default function SearchForm() {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "w-full justify-start text-left font-normal h-12 rounded-none border-x-2 border-yellow-400",
                           !field.value?.from && "text-muted-foreground"
                         )}
                       >
@@ -150,7 +150,7 @@ export default function SearchForm() {
           />
         </div>
         
-        <div className="md:col-span-2">
+        <div className="lg:col-span-3">
           <FormField
             control={form.control}
             name="guests"
@@ -159,7 +159,7 @@ export default function SearchForm() {
                 <FormControl>
                   <div className="relative">
                     <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input type="number" placeholder="Guests" className="pl-10" min="1" {...field} />
+                    <Input type="number" placeholder="Guests" className="pl-10 h-12 rounded-none border-0" min="1" {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -168,8 +168,8 @@ export default function SearchForm() {
           />
         </div>
 
-        <Button type="submit" className="w-full md:col-span-2 bg-accent hover:bg-accent/90 text-accent-foreground">
-          <Search className="mr-2 h-4 w-4" /> Search
+        <Button type="submit" className="w-full lg:col-span-1 h-12 rounded-none rounded-r-sm text-lg">
+           Search
         </Button>
       </form>
     </Form>
