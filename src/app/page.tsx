@@ -41,7 +41,7 @@ export default function Home() {
       <div className="container mx-auto px-4 -mt-16 z-20 relative flex justify-center">
         <SearchForm />
       </div>
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
         <h2 className="text-3xl font-headline font-bold mb-6">Browse by property type</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {propertyTypes.map(type => (
