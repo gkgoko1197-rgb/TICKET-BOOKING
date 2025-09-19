@@ -49,11 +49,11 @@ const FormSchema = z.object({
 type FormValues = z.infer<typeof FormSchema>;
 
 const trendingDestinations = [
+    { name: 'Kerala', country: 'India' },
     { name: 'Chennai', country: 'India' },
-    { name: 'Bangalore', country: 'India' },
-    { name: 'Pondicherry', country: 'India' },
-    { name: 'Coimbatore', country: 'India' },
-    { name: 'Madurai', country: 'India' },
+    { name: 'Mumbai', country: 'India' },
+    { name: 'New Delhi', country: 'India' },
+    { name: 'Mangalore', country: 'India' },
 ];
 
 export default function SearchForm() {
