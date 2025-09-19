@@ -67,27 +67,51 @@ export default function Home() {
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-3xl font-headline font-bold">Trending destinations</h2>
         <p className="text-muted-foreground mb-6">Travelers searching for India also booked these</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-10 gap-4">
-            {trendingDestinations.map((dest, index) => (
-                <Link href="#" key={dest.name} className={index < 2 ? 'lg:col-span-5' : 'lg:col-span-10 sm:col-span-1'}>
-                     <Card className={`overflow-hidden hover:shadow-xl transition-shadow w-full ${index >=2 ? 'lg:col-span-1' : ''}`}>
-                        <div className={`relative ${index < 2 ? 'h-64' : 'h-48'}`}>
-                            <Image
-                                src={dest.imageUrl}
-                                alt={dest.name}
-                                fill
-                                className="object-cover"
-                                data-ai-hint={dest.hint}
-                            />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                            <div className="absolute bottom-4 left-4 text-white font-bold text-xl flex items-center gap-2">
-                               <span>{dest.name}</span>
-                               <span className="text-2xl">🇮🇳</span>
-                            </div>
-                        </div>
-                    </Card>
-                </Link>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {trendingDestinations.slice(0, 2).map((dest) => (
+              <Link href="#" key={dest.name}>
+                <Card className="overflow-hidden hover:shadow-xl transition-shadow w-full">
+                  <div className="relative h-64">
+                    <Image
+                      src={dest.imageUrl}
+                      alt={dest.name}
+                      fill
+                      className="object-cover"
+                      data-ai-hint={dest.hint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4 text-white font-bold text-xl flex items-center gap-2">
+                      <span>{dest.name}</span>
+                      <span className="text-2xl">🇮🇳</span>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
             ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {trendingDestinations.slice(2).map((dest) => (
+              <Link href="#" key={dest.name}>
+                <Card className="overflow-hidden hover:shadow-xl transition-shadow w-full">
+                  <div className="relative h-48">
+                    <Image
+                      src={dest.imageUrl}
+                      alt={dest.name}
+                      fill
+                      className="object-cover"
+                      data-ai-hint={dest.hint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4 text-white font-bold text-xl flex items-center gap-2">
+                      <span>{dest.name}</span>
+                      <span className="text-2xl">🇮🇳</span>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </>
