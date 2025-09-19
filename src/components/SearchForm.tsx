@@ -98,8 +98,7 @@ export default function SearchForm() {
               control={form.control}
               name="destination"
               render={({ field }) => (
-                <FormItem className="flex-1 w-full">
-                  <FormLabel className="pl-10 text-xs text-muted-foreground">Where are you going?</FormLabel>
+                <FormItem className="flex-1">
                   <FormControl>
                     <div className="relative">
                       <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -118,7 +117,7 @@ export default function SearchForm() {
               control={form.control}
               name="dates"
               render={({ field }) => (
-                <FormItem className="flex-1 w-full">
+                <FormItem className="flex-1">
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
