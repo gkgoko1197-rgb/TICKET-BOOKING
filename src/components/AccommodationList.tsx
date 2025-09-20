@@ -2,7 +2,6 @@
 
 import type { Accommodation } from "@/lib/data";
 import AccommodationCard from "./AccommodationCard";
-import { ScrollArea } from "./ui/scroll-area";
 
 interface AccommodationListProps {
   accommodations: Accommodation[];
@@ -19,16 +18,14 @@ export default function AccommodationList({ accommodations, highlighted }: Accom
   }
 
   return (
-    <ScrollArea className="h-[calc(100vh-200px)]">
-      <div className="space-y-4 pr-4">
-        {accommodations.map((acc) => (
-          <AccommodationCard 
-            key={acc.id} 
-            accommodation={acc} 
-            isHighlighted={highlighted.includes(acc.name)}
-          />
-        ))}
-      </div>
-    </ScrollArea>
+    <div className="space-y-4">
+      {accommodations.map((acc) => (
+        <AccommodationCard 
+          key={acc.id} 
+          accommodation={acc} 
+          isHighlighted={highlighted.includes(acc.name)}
+        />
+      ))}
+    </div>
   );
 }
