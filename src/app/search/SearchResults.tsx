@@ -4,7 +4,6 @@ import { useState, useMemo, useEffect } from "react";
 import type { Accommodation } from "@/lib/data";
 import FilterSidebar from "@/components/FilterSidebar";
 import AccommodationList from "@/components/AccommodationList";
-import MapWrapper from "@/components/MapWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type Filters = {
@@ -63,11 +62,11 @@ export default function SearchResults({
 
   if (!isClient) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-3">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="lg:col-span-1">
           <Skeleton className="h-[600px] w-full" />
         </div>
-        <div className="lg:col-span-9">
+        <div className="lg:col-span-3">
           <Skeleton className="h-full w-full min-h-[600px]" />
         </div>
       </div>
@@ -75,8 +74,8 @@ export default function SearchResults({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <div className="lg:col-span-3">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="lg:col-span-1">
         <FilterSidebar
           filters={filters}
           onFilterChange={setFilters}
@@ -84,19 +83,12 @@ export default function SearchResults({
           resultsCount={filteredAccommodations.length}
         />
       </div>
-      <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="md:col-span-2">
-            <h2 className="text-2xl font-headline font-semibold mb-4">
-                {searchParams.destination ? `${searchParams.destination}: ` : ''} 
-                {filteredAccommodations.length} properties found
-            </h2>
-        </div>
-        <div className="md:col-span-1 h-[400px] md:h-auto md:order-2">
-           <MapWrapper accommodations={filteredAccommodations} />
-        </div>
-        <div className="md:col-span-1 md:order-1">
-          <AccommodationList accommodations={filteredAccommodations} highlighted={highlighted} />
-        </div>
+      <div className="lg:col-span-3">
+        <h2 className="text-2xl font-headline font-semibold mb-4">
+            {searchParams.destination ? `${searchParams.destination}: ` : ''} 
+            {filteredAccommodations.length} properties found
+        </h2>
+        <AccommodationList accommodations={filteredAccommodations} highlighted={highlighted} />
       </div>
     </div>
   );

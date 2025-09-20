@@ -2,6 +2,7 @@
 
 import type { Accommodation } from "@/lib/data";
 import AccommodationCard from "./AccommodationCard";
+import { ScrollArea } from "./ui/scroll-area";
 
 interface AccommodationListProps {
   accommodations: Accommodation[];

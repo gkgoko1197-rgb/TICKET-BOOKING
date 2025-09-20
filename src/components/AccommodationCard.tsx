@@ -16,7 +16,7 @@ export default function AccommodationCard({ accommodation, isHighlighted = false
     <Link href={`/accommodation/${accommodation.id}`}>
       <Card className={cn("overflow-hidden transition-all hover:shadow-lg", isHighlighted && "ring-2 ring-primary shadow-lg")}>
         <div className="flex flex-col sm:flex-row">
-          <div className="relative h-48 sm:h-auto sm:w-1/3">
+          <div className="relative h-48 sm:h-auto sm:w-2/5 md:w-1/3">
             <Image
               src={accommodation.images[0].url}
               alt={accommodation.name}
