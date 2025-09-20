@@ -113,6 +113,15 @@ const southAmericaDestinations = [
     { name: 'Quito', thingsToDo: 900, imageUrl: 'https://picsum.photos/seed/quito-dest/400/300', hint: 'Quito old town' },
 ];
 
+const allDestinations = [
+    ...europeDestinations,
+    ...northAmericaDestinations,
+    ...asiaDestinations,
+    ...africaDestinations,
+    ...oceaniaDestinations,
+    ...southAmericaDestinations,
+];
+
 const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {destinations.map((dest) => (
@@ -215,8 +224,9 @@ export default function AttractionsPage() {
           <section className="mb-16">
             <h2 className="text-3xl font-headline font-bold">Explore more destinations</h2>
             <p className="text-muted-foreground mb-6">Find things to do in cities around the world</p>
-            <Tabs defaultValue="europe" className="w-full">
+            <Tabs defaultValue="all" className="w-full">
               <TabsList className="flex flex-wrap h-auto justify-start bg-transparent p-0 mb-4 border-b rounded-none">
+                <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="europe">Europe</TabsTrigger>
                 <TabsTrigger value="north-america">North America</TabsTrigger>
                 <TabsTrigger value="asia">Asia</TabsTrigger>
@@ -224,6 +234,9 @@ export default function AttractionsPage() {
                 <TabsTrigger value="oceania">Oceania</TabsTrigger>
                 <TabsTrigger value="south-america">South America</TabsTrigger>
               </TabsList>
+              <TabsContent value="all">
+                <DestinationGrid destinations={allDestinations} />
+              </TabsContent>
               <TabsContent value="europe">
                 <DestinationGrid destinations={europeDestinations} />
               </TabsContent>
