@@ -1,12 +1,15 @@
 
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, MapPin, Ticket, Landmark, Mountain, Palmtree } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useRouter } from 'next/navigation';
 
 
 const topDestinations = [
@@ -39,6 +42,10 @@ const europeDestinations = [
     { name: 'Barcelona', thingsToDo: 2509, imageUrl: 'https://picsum.photos/seed/barcelona-dest/400/300', hint: 'Barcelona architecture' },
     { name: 'Venice', thingsToDo: 1762, imageUrl: 'https://picsum.photos/seed/venice-dest/400/300', hint: 'Venice canal' },
     { name: 'Málaga', thingsToDo: 823, imageUrl: 'https://picsum.photos/seed/malaga-dest/400/300', hint: 'Malaga beach' },
+    { name: 'Dublin', thingsToDo: 1200, imageUrl: 'https://picsum.photos/seed/dublin-dest/400/300', hint: 'Dublin street' },
+    { name: 'Prague', thingsToDo: 2100, imageUrl: 'https://picsum.photos/seed/prague-dest/400/300', hint: 'Prague castle' },
+    { name: 'Vienna', thingsToDo: 1500, imageUrl: 'https://picsum.photos/seed/vienna-dest/400/300', hint: 'Vienna opera' },
+    { name: 'Budapest', thingsToDo: 1800, imageUrl: 'https://picsum.photos/seed/budapest-dest/400/300', hint: 'Budapest parliament' },
 ];
 
 const northAmericaDestinations = [
@@ -50,6 +57,10 @@ const northAmericaDestinations = [
     { name: 'Cancun', thingsToDo: 1567, imageUrl: 'https://picsum.photos/seed/cancun-dest/400/300', hint: 'Cancun beach' },
     { name: 'Las Vegas', thingsToDo: 4890, imageUrl: 'https://picsum.photos/seed/vegas-dest/400/300', hint: 'Las Vegas strip' },
     { name: 'San Francisco', thingsToDo: 2876, imageUrl: 'https://picsum.photos/seed/sf-dest/400/300', hint: 'San Francisco bridge' },
+    { name: 'Chicago', thingsToDo: 2000, imageUrl: 'https://picsum.photos/seed/chicago-dest/400/300', hint: 'Chicago bean' },
+    { name: 'Miami', thingsToDo: 1800, imageUrl: 'https://picsum.photos/seed/miami-dest/400/300', hint: 'Miami beach' },
+    { name: 'Montreal', thingsToDo: 1100, imageUrl: 'https://picsum.photos/seed/montreal-dest/400/300', hint: 'Montreal city' },
+    { name: 'Havana', thingsToDo: 800, imageUrl: 'https://picsum.photos/seed/havana-dest/400/300', hint: 'Havana cars' },
 ];
 
 const asiaDestinations = [
@@ -61,6 +72,10 @@ const asiaDestinations = [
     { name: 'Kyoto', thingsToDo: 2876, imageUrl: 'https://picsum.photos/seed/kyoto-dest/400/300', hint: 'Kyoto temple' },
     { name: 'Bali', thingsToDo: 3123, imageUrl: 'https://picsum.photos/seed/bali-dest/400/300', hint: 'Bali beach' },
     { name: 'Taipei', thingsToDo: 1543, imageUrl: 'https://picsum.photos/seed/taipei-dest/400/300', hint: 'Taipei 101' },
+    { name: 'Shanghai', thingsToDo: 2500, imageUrl: 'https://picsum.photos/seed/shanghai-dest/400/300', hint: 'Shanghai skyline' },
+    { name: 'Mumbai', thingsToDo: 2200, imageUrl: 'https://picsum.photos/seed/mumbai-dest/400/300', hint: 'Mumbai gateway' },
+    { name: 'Ho Chi Minh City', thingsToDo: 1700, imageUrl: 'https://picsum.photos/seed/hcmc-dest/400/300', hint: 'Saigon street' },
+    { name: 'Kuala Lumpur', thingsToDo: 1900, imageUrl: 'https://picsum.photos/seed/kl-dest/400/300', hint: 'Petronas Towers' },
 ];
 
 const africaDestinations = [
@@ -70,6 +85,8 @@ const africaDestinations = [
     { name: 'Nairobi', thingsToDo: 789, imageUrl: 'https://picsum.photos/seed/nairobi-dest/400/300', hint: 'Nairobi wildlife' },
     { name: 'Lagos', thingsToDo: 543, imageUrl: 'https://picsum.photos/seed/lagos-dest/400/300', hint: 'Lagos city' },
     { name: 'Zanzibar', thingsToDo: 987, imageUrl: 'https://picsum.photos/seed/zanzibar-dest/400/300', hint: 'Zanzibar beach' },
+    { name: 'Johannesburg', thingsToDo: 1200, imageUrl: 'https://picsum.photos/seed/johannesburg-dest/400/300', hint: 'Johannesburg skyline' },
+    { name: 'Luxor', thingsToDo: 1100, imageUrl: 'https://picsum.photos/seed/luxor-dest/400/300', hint: 'Luxor temple' },
 ];
 
 const oceaniaDestinations = [
@@ -79,6 +96,8 @@ const oceaniaDestinations = [
     { name: 'Queenstown', thingsToDo: 1122, imageUrl: 'https://picsum.photos/seed/queenstown-dest/400/300', hint: 'Queenstown mountains' },
     { name: 'Fiji', thingsToDo: 876, imageUrl: 'https://picsum.photos/seed/fiji-dest/400/300', hint: 'Fiji beach' },
     { name: 'Bora Bora', thingsToDo: 543, imageUrl: 'https://picsum.photos/seed/borabora-dest/400/300', hint: 'Bora Bora bungalow' },
+    { name: 'Perth', thingsToDo: 900, imageUrl: 'https://picsum.photos/seed/perth-dest/400/300', hint: 'Perth skyline' },
+    { name: 'Adelaide', thingsToDo: 600, imageUrl: 'https://picsum.photos/seed/adelaide-dest/400/300', hint: 'Adelaide city' },
 ];
 
 const southAmericaDestinations = [
@@ -90,12 +109,14 @@ const southAmericaDestinations = [
     { name: 'Santiago', thingsToDo: 1122, imageUrl: 'https://picsum.photos/seed/santiago-dest/400/300', hint: 'Santiago skyline' },
     { name: 'Cartagena', thingsToDo: 1345, imageUrl: 'https://picsum.photos/seed/cartagena-dest/400/300', hint: 'Cartagena colorful streets' },
     { name: 'Galapagos', thingsToDo: 456, imageUrl: 'https://picsum.photos/seed/galapagos-dest/400/300', hint: 'Galapagos wildlife' },
+    { name: 'Bogotá', thingsToDo: 1400, imageUrl: 'https://picsum.photos/seed/bogota-dest/400/300', hint: 'Bogota city' },
+    { name: 'Quito', thingsToDo: 900, imageUrl: 'https://picsum.photos/seed/quito-dest/400/300', hint: 'Quito old town' },
 ];
 
 const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {destinations.map((dest) => (
-        <Link href="#" key={dest.name}>
+        <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
           <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
               <div className="relative aspect-video">
                   <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
@@ -106,13 +127,23 @@ const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinat
                   </div>
               </div>
           </Card>
-        </Link>
+        </a>
       ))}
     </div>
 );
 
 
 export default function AttractionsPage() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?destination=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -128,11 +159,13 @@ export default function AttractionsPage() {
           <h1 className="text-5xl font-headline font-bold mb-4">Attractions, activities and experiences</h1>
           <p className="text-xl mb-8">Discover and book things to do, from walking tours to day trips and more.</p>
           <div className="max-w-xl mx-auto">
-            <form className="relative">
+            <form className="relative" onSubmit={handleSearch}>
               <Input
                 type="search"
                 placeholder="Where are you going?"
                 className="w-full h-14 pl-6 pr-24 rounded-full text-base text-foreground"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button type="submit" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-accent hover:bg-accent/90">
                 <Search className="h-5 w-5" />
@@ -150,7 +183,7 @@ export default function AttractionsPage() {
             <h2 className="text-3xl font-headline font-bold mb-6">Top destinations for attractions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {topDestinations.map(dest => (
-                <Link href="#" key={dest.name}>
+                <Link href={`/search?destination=${encodeURIComponent(dest.name)}`} key={dest.name}>
                     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
                         <div className="relative aspect-[4/5]">
                             <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
@@ -217,5 +250,3 @@ export default function AttractionsPage() {
     </div>
   );
 }
-
-    
