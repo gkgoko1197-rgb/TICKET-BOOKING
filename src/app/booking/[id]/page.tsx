@@ -1,3 +1,4 @@
+
 "use client";
 
 import { accommodations } from "@/lib/data";
@@ -20,15 +21,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { CreditCard, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const bookingFormSchema = z.object({
   fullName: z.string().min(2, { message: "Full name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email." }),
-  cardName: z.string().min(2, { message: "Name on card is required." }),
-  cardNumber: z.string().refine((val) => /^\d{16}$/.test(val), { message: "Card number must be 16 digits." }),
-  expiryDate: z.string().refine((val) => /^(0[1-9]|1[0-2])\/\d{2}$/.test(val), { message: "Expiry date must be in MM/YY format." }),
-  cvc: z.string().refine((val) => /^\d{3,4}$/.test(val), { message: "CVC must be 3 or 4 digits." }),
+  paymentMethod: z.enum(["credit-card", "paypal"]),
+  cardName: z.string().optional(),
+  cardNumber: z.string().optional(),
+  expiryDate: z.string().optional(),
+  cvc: z.string().optional(),
+}).refine(data => {
+    if (data.paymentMethod === 'credit-card') {
+        return (
+            z.string().min(2, { message: "Name on card is required." }).safeParse(data.cardName).success &&
+            z.string().refine((val) => /^\d{16}$/.test(val), { message: "Card number must be 16 digits." }).safeParse(data.cardNumber).success &&
+            z.string().refine((val) => /^(0[1-9]|1[0-2])\/\d{2}$/.test(val), { message: "Expiry date must be in MM/YY format." }).safeParse(data.expiryDate).success &&
+            z.string().refine((val) => /^\d{3,4}$/.test(val), { message: "CVC must be 3 or 4 digits." }).safeParse(data.cvc).success
+        )
+    }
+    return true;
+}, {
+    message: "Credit card details are required.",
+    path: ["cardName"], // you can specify which field to show the error on, or a general one
 });
+
 
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
@@ -43,12 +60,15 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     defaultValues: {
       fullName: "",
       email: "",
+      paymentMethod: "credit-card",
       cardName: "",
       cardNumber: "",
       expiryDate: "",
       cvc: "",
     },
   });
+
+  const paymentMethod = form.watch("paymentMethod");
 
   if (!accommodation) {
     notFound();
@@ -133,56 +153,99 @@ export default function BookingPage({ params }: { params: { id: string } }) {
                   />
 
                   <div className="border-t pt-4 mt-4">
-                     <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><CreditCard /> Payment Details</h3>
+                     <h3 className="text-lg font-semibold mb-2 flex items-center gap-2"><CreditCard /> Payment Method</h3>
                      <FormField
                         control={form.control}
-                        name="cardName"
+                        name="paymentMethod"
                         render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Name on Card</FormLabel>
-                            <FormControl><Input placeholder="John M Doe" {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="cardNumber"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Card Number</FormLabel>
-                            <FormControl><Input placeholder="0000 0000 0000 0000" {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                    <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                            control={form.control}
-                            name="expiryDate"
-                            render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Expiry</FormLabel>
-                                <FormControl><Input placeholder="MM/YY" {...field} /></FormControl>
+                            <FormItem className="space-y-3">
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex space-x-4"
+                                    >
+                                    <FormItem className="flex items-center space-x-2 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="credit-card" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                        Credit Card
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-2 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="paypal" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                        PayPal
+                                        </FormLabel>
+                                    </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
-                            )}
+                        )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="cvc"
-                            render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>CVC</FormLabel>
-                                <FormControl><Input placeholder="123" {...field} /></FormControl>
-                                <FormMessage />
-                            </FormItem>
-                            )}
-                        />
-                    </div>
+                     
+                     {paymentMethod === 'credit-card' && (
+                        <div className="space-y-4 mt-4">
+                            <FormField
+                                control={form.control}
+                                name="cardName"
+                                render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Name on Card</FormLabel>
+                                    <FormControl><Input placeholder="John M Doe" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="cardNumber"
+                                render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Card Number</FormLabel>
+                                    <FormControl><Input placeholder="0000 0000 0000 0000" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="expiryDate"
+                                    render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Expiry</FormLabel>
+                                        <FormControl><Input placeholder="MM/YY" {...field} /></FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="cvc"
+                                    render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>CVC</FormLabel>
+                                        <FormControl><Input placeholder="123" {...field} /></FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
+                     )}
+                     {paymentMethod === 'paypal' && (
+                        <div className="mt-4 flex items-center justify-center bg-gray-100 p-6 rounded-md">
+                            <p className="text-muted-foreground">PayPal checkout coming soon.</p>
+                        </div>
+                     )}
                   </div>
                   
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6" disabled={isLoading}>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6" disabled={isLoading || paymentMethod === 'paypal'}>
                     {isLoading ? <Loader2 className="animate-spin" /> : "Complete Booking"}
                   </Button>
                 </form>
@@ -194,3 +257,5 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
+
+    
