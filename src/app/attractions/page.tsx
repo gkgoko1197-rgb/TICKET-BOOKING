@@ -24,49 +24,6 @@ const categories = [
     { name: 'Tickets', icon: <Ticket /> },
 ];
 
-const trendingAttractions = [
-  {
-    id: 'attr1',
-    name: 'Louvre Museum Priority Access',
-    location: 'Paris, France',
-    rating: 4.8,
-    reviews: 12890,
-    price: 25,
-    imageUrl: 'https://picsum.photos/seed/louvre/800/600',
-    hint: 'art museum'
-  },
-  {
-    id: 'attr2',
-    name: 'Colosseum & Roman Forum Guided Tour',
-    location: 'Rome, Italy',
-    rating: 4.9,
-    reviews: 21543,
-    price: 78,
-    imageUrl: 'https://picsum.photos/seed/colosseum/800/600',
-    hint: 'ancient ruins'
-  },
-  {
-    id: 'attr3',
-    name: 'Statue of Liberty & Ellis Island',
-    location: 'New York, USA',
-    rating: 4.7,
-    reviews: 18450,
-    price: 44,
-    imageUrl: 'https://picsum.photos/seed/liberty/800/600',
-    hint: 'famous statue'
-  },
-  {
-    id: 'attr4',
-    name: 'Burj Khalifa At the Top (Level 124 & 125)',
-    location: 'Dubai, UAE',
-    rating: 4.6,
-    reviews: 32987,
-    price: 55,
-    imageUrl: 'https://picsum.photos/seed/burj/800/600',
-    hint: 'tall skyscraper'
-  }
-];
-
 export default function AttractionsPage() {
   return (
     <div className="flex flex-col">
@@ -131,44 +88,6 @@ export default function AttractionsPage() {
                 </Link>
               ))}
             </div>
-          </section>
-          
-          {/* Trending Attractions */}
-          <section>
-            <h2 className="text-3xl font-headline font-bold mb-6">Trending attractions</h2>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {trendingAttractions.map(attr => (
-                    <Link href="#" key={attr.id}>
-                        <Card className="overflow-hidden group hover:shadow-xl transition-shadow flex flex-col h-full">
-                           <div className="relative h-64 w-full">
-                                <Image src={attr.imageUrl} alt={attr.name} fill className="object-cover" data-ai-hint={attr.hint} />
-                           </div>
-                           <CardContent className="p-4 flex-grow flex flex-col justify-between">
-                               <div>
-                                    <h3 className="font-headline font-bold text-xl mb-2 leading-tight">{attr.name}</h3>
-                                    <p className="text-muted-foreground text-sm mb-2">{attr.location}</p>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <div className="flex items-center gap-1 text-yellow-600">
-                                            <Star className="w-4 h-4 fill-current" />
-                                            <span className="font-bold">{attr.rating}</span>
-                                        </div>
-                                        <span className="text-muted-foreground">({attr.reviews.toLocaleString()} reviews)</span>
-                                    </div>
-                               </div>
-                               <div className="flex justify-between items-end mt-4">
-                                    <div>
-                                        <p className="text-muted-foreground text-sm">From</p>
-                                        <p className="font-bold text-xl text-primary">${attr.price}</p>
-                                    </div>
-                                   <Button variant="ghost" size="icon" className="text-primary group-hover:bg-primary/10">
-                                       <ArrowRight />
-                                   </Button>
-                               </div>
-                           </CardContent>
-                        </Card>
-                    </Link>
-                ))}
-             </div>
           </section>
 
         </div>
