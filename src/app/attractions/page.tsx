@@ -41,6 +41,77 @@ const europeDestinations = [
     { name: 'Málaga', thingsToDo: 823, imageUrl: 'https://picsum.photos/seed/malaga-dest/400/300', hint: 'Malaga beach' },
 ];
 
+const northAmericaDestinations = [
+    { name: 'New York', thingsToDo: 5432, imageUrl: 'https://picsum.photos/seed/ny-dest/400/300', hint: 'New York skyline' },
+    { name: 'Los Angeles', thingsToDo: 3123, imageUrl: 'https://picsum.photos/seed/la-dest/400/300', hint: 'Los Angeles beach' },
+    { name: 'Toronto', thingsToDo: 1234, imageUrl: 'https://picsum.photos/seed/toronto-dest/400/300', hint: 'Toronto skyline' },
+    { name: 'Vancouver', thingsToDo: 987, imageUrl: 'https://picsum.photos/seed/vancouver-dest/400/300', hint: 'Vancouver mountains' },
+    { name: 'Mexico City', thingsToDo: 2345, imageUrl: 'https://picsum.photos/seed/mexico-city-dest/400/300', hint: 'Mexico City architecture' },
+    { name: 'Cancun', thingsToDo: 1567, imageUrl: 'https://picsum.photos/seed/cancun-dest/400/300', hint: 'Cancun beach' },
+    { name: 'Las Vegas', thingsToDo: 4890, imageUrl: 'https://picsum.photos/seed/vegas-dest/400/300', hint: 'Las Vegas strip' },
+    { name: 'San Francisco', thingsToDo: 2876, imageUrl: 'https://picsum.photos/seed/sf-dest/400/300', hint: 'San Francisco bridge' },
+];
+
+const asiaDestinations = [
+    { name: 'Tokyo', thingsToDo: 6789, imageUrl: 'https://picsum.photos/seed/tokyo-dest/400/300', hint: 'Tokyo city' },
+    { name: 'Seoul', thingsToDo: 3456, imageUrl: 'https://picsum.photos/seed/seoul-dest/400/300', hint: 'Seoul palace' },
+    { name: 'Bangkok', thingsToDo: 4321, imageUrl: 'https://picsum.photos/seed/bangkok-dest/400/300', hint: 'Bangkok temple' },
+    { name: 'Singapore', thingsToDo: 2109, imageUrl: 'https://picsum.photos/seed/singapore-dest/400/300', hint: 'Singapore skyline' },
+    { name: 'Hong Kong', thingsToDo: 3212, imageUrl: 'https://picsum.photos/seed/hk-dest/400/300', hint: 'Hong Kong harbor' },
+    { name: 'Kyoto', thingsToDo: 2876, imageUrl: 'https://picsum.photos/seed/kyoto-dest/400/300', hint: 'Kyoto temple' },
+    { name: 'Bali', thingsToDo: 3123, imageUrl: 'https://picsum.photos/seed/bali-dest/400/300', hint: 'Bali beach' },
+    { name: 'Taipei', thingsToDo: 1543, imageUrl: 'https://picsum.photos/seed/taipei-dest/400/300', hint: 'Taipei 101' },
+];
+
+const africaDestinations = [
+    { name: 'Cairo', thingsToDo: 1876, imageUrl: 'https://picsum.photos/seed/cairo-dest/400/300', hint: 'Cairo pyramids' },
+    { name: 'Cape Town', thingsToDo: 2109, imageUrl: 'https://picsum.photos/seed/capetown-dest/400/300', hint: 'Cape Town mountain' },
+    { name: 'Marrakech', thingsToDo: 1567, imageUrl: 'https://picsum.photos/seed/marrakech-dest/400/300', hint: 'Marrakech market' },
+    { name: 'Nairobi', thingsToDo: 789, imageUrl: 'https://picsum.photos/seed/nairobi-dest/400/300', hint: 'Nairobi wildlife' },
+    { name: 'Lagos', thingsToDo: 543, imageUrl: 'https://picsum.photos/seed/lagos-dest/400/300', hint: 'Lagos city' },
+    { name: 'Zanzibar', thingsToDo: 987, imageUrl: 'https://picsum.photos/seed/zanzibar-dest/400/300', hint: 'Zanzibar beach' },
+];
+
+const oceaniaDestinations = [
+    { name: 'Sydney', thingsToDo: 3456, imageUrl: 'https://picsum.photos/seed/sydney-dest/400/300', hint: 'Sydney opera house' },
+    { name: 'Melbourne', thingsToDo: 2345, imageUrl: 'https://picsum.photos/seed/melbourne-dest/400/300', hint: 'Melbourne street art' },
+    { name: 'Auckland', thingsToDo: 1234, imageUrl: 'https://picsum.photos/seed/auckland-dest/400/300', hint: 'Auckland skyline' },
+    { name: 'Queenstown', thingsToDo: 1122, imageUrl: 'https://picsum.photos/seed/queenstown-dest/400/300', hint: 'Queenstown mountains' },
+    { name: 'Fiji', thingsToDo: 876, imageUrl: 'https://picsum.photos/seed/fiji-dest/400/300', hint: 'Fiji beach' },
+    { name: 'Bora Bora', thingsToDo: 543, imageUrl: 'https://picsum.photos/seed/borabora-dest/400/300', hint: 'Bora Bora bungalow' },
+];
+
+const southAmericaDestinations = [
+    { name: 'Rio de Janeiro', thingsToDo: 2987, imageUrl: 'https://picsum.photos/seed/rio-dest/400/300', hint: 'Rio Christ the Redeemer' },
+    { name: 'Buenos Aires', thingsToDo: 1765, imageUrl: 'https://picsum.photos/seed/buenos-aires-dest/400/300', hint: 'Buenos Aires street' },
+    { name: 'Lima', thingsToDo: 1234, imageUrl: 'https://picsum.photos/seed/lima-dest/400/300', hint: 'Lima architecture' },
+    { name: 'Cusco', thingsToDo: 1543, imageUrl: 'https://picsum.photos/seed/cusco-dest/400/300', hint: 'Cusco ruins' },
+    { name: 'Medellín', thingsToDo: 987, imageUrl: 'https://picsum.photos/seed/medellin-dest/400/300', hint: 'Medellin city' },
+    { name: 'Santiago', thingsToDo: 1122, imageUrl: 'https://picsum.photos/seed/santiago-dest/400/300', hint: 'Santiago skyline' },
+    { name: 'Cartagena', thingsToDo: 1345, imageUrl: 'https://picsum.photos/seed/cartagena-dest/400/300', hint: 'Cartagena colorful streets' },
+    { name: 'Galapagos', thingsToDo: 456, imageUrl: 'https://picsum.photos/seed/galapagos-dest/400/300', hint: 'Galapagos wildlife' },
+];
+
+const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {destinations.map((dest) => (
+        <Link href="#" key={dest.name}>
+          <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
+              <div className="relative aspect-video">
+                  <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-3 left-4">
+                    <h3 className="text-white font-bold text-lg">{dest.name}</h3>
+                    <p className="text-white/90 text-sm">{dest.thingsToDo} things to do</p>
+                  </div>
+              </div>
+          </Card>
+        </Link>
+      ))}
+    </div>
+);
+
+
 export default function AttractionsPage() {
   return (
     <div className="flex flex-col">
@@ -118,53 +189,25 @@ export default function AttractionsPage() {
                 <TabsTrigger value="asia">Asia</TabsTrigger>
                 <TabsTrigger value="africa">Africa</TabsTrigger>
                 <TabsTrigger value="oceania">Oceania</TabsTrigger>
-                <TabsTrigger value="middle-east">Middle East</TabsTrigger>
-                <TabsTrigger value="caribbean">Caribbean</TabsTrigger>
                 <TabsTrigger value="south-america">South America</TabsTrigger>
-                <TabsTrigger value="central-america">Central America</TabsTrigger>
               </TabsList>
               <TabsContent value="europe">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {europeDestinations.map((dest) => (
-                    <Link href="#" key={dest.name}>
-                      <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
-                          <div className="relative aspect-video">
-                              <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                              <div className="absolute bottom-3 left-4">
-                                <h3 className="text-white font-bold text-lg">{dest.name}</h3>
-                                <p className="text-white/90 text-sm">{dest.thingsToDo} things to do</p>
-                              </div>
-                          </div>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
+                <DestinationGrid destinations={europeDestinations} />
               </TabsContent>
-               {/* Add empty TabsContent for other regions to avoid warnings */}
                <TabsContent value="north-america">
-                 <div className="text-center py-8 text-muted-foreground">Content for North America coming soon.</div>
+                 <DestinationGrid destinations={northAmericaDestinations} />
                </TabsContent>
                <TabsContent value="asia">
-                 <div className="text-center py-8 text-muted-foreground">Content for Asia coming soon.</div>
+                 <DestinationGrid destinations={asiaDestinations} />
                 </TabsContent>
                 <TabsContent value="africa">
-                    <div className="text-center py-8 text-muted-foreground">Content for Africa coming soon.</div>
+                    <DestinationGrid destinations={africaDestinations} />
                 </TabsContent>
                 <TabsContent value="oceania">
-                    <div className="text-center py-8 text-muted-foreground">Content for Oceania coming soon.</div>
-                </TabsContent>
-                <TabsContent value="middle-east">
-                    <div className="text-center py-8 text-muted-foreground">Content for Middle East coming soon.</div>
-                </TabsContent>
-                <TabsContent value="caribbean">
-                    <div className="text-center py-8 text-muted-foreground">Content for Caribbean coming soon.</div>
+                    <DestinationGrid destinations={oceaniaDestinations} />
                 </TabsContent>
                 <TabsContent value="south-america">
-                    <div className="text-center py-8 text-muted-foreground">Content for South America coming soon.</div>
-                </TabsContent>
-                <TabsContent value="central-america">
-                    <div className="text-center py-8 text-muted-foreground">Content for Central America coming soon.</div>
+                    <DestinationGrid destinations={southAmericaDestinations} />
                 </TabsContent>
             </Tabs>
           </section>
@@ -174,3 +217,5 @@ export default function AttractionsPage() {
     </div>
   );
 }
+
+    
