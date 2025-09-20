@@ -22,10 +22,10 @@ interface MapWrapperProps {
 export default function MapWrapper({ accommodations }: MapWrapperProps) {
   const [selected, setSelected] = useState<Accommodation | null>(null);
 
-  if (!GOOGLE_MAPS_API_KEY) {
+  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
     return (
         <div className="h-full w-full bg-muted rounded-lg flex items-center justify-center p-4 text-center">
-            <p>Google Maps API key is missing. Please add it to your environment variables to display the map.</p>
+            <p>Google Maps API key is missing or invalid. Please add it to your environment variables to display the map.</p>
         </div>
     );
   }
