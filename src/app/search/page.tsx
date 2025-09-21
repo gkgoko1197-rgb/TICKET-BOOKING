@@ -1,8 +1,6 @@
 import { accommodations } from "@/lib/data";
 import SearchResults from "./SearchResults";
 
-export const dynamic = 'force-dynamic'; // Make sure searchParams are read on every request
-
 export default function SearchPage({
   searchParams,
 }: {
