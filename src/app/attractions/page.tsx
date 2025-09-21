@@ -169,16 +169,16 @@ const allDestinations = [
 ];
 
 const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       {destinations.map((dest) => (
         <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
           <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
-              <div className="relative aspect-video">
+              <div className="relative aspect-square">
                   <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  <div className="absolute bottom-3 left-4">
-                    <h3 className="text-white font-bold text-lg">{dest.name}</h3>
-                    <p className="text-white/90 text-sm">{dest.thingsToDo} things to do</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-2 left-3">
+                    <h3 className="text-white font-bold text-base">{dest.name}</h3>
+                    <p className="text-white/90 text-xs">{dest.thingsToDo} things to do</p>
                   </div>
               </div>
           </Card>
@@ -202,28 +202,28 @@ export default function AttractionsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-primary/90 text-white py-20 -mt-1">
+      <section className="relative bg-primary/90 text-white py-16 -mt-1">
         <Image
-            src="https://picsum.photos/seed/attractions-hero/1920/600"
+            src="https://picsum.photos/seed/attractions-hero/1920/500"
             alt="Attractions background"
             fill
             className="object-cover object-center z-0 opacity-20"
             data-ai-hint="city attractions montage"
         />
         <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
-          <h1 className="text-5xl font-headline font-bold mb-4">Attractions, activities and experiences</h1>
-          <p className="text-xl mb-8">Discover and book things to do, from walking tours to day trips and more.</p>
+          <h1 className="text-4xl font-headline font-bold mb-3">Attractions, activities and experiences</h1>
+          <p className="text-lg mb-6">Discover and book things to do, from walking tours to day trips and more.</p>
           <div className="max-w-xl mx-auto">
             <form className="relative" onSubmit={handleSearch}>
               <Input
                 type="search"
                 placeholder="Where are you going?"
-                className="w-full h-14 pl-6 pr-24 rounded-full text-base text-foreground"
+                className="w-full h-12 pl-5 pr-20 rounded-full text-base text-foreground"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <Button type="submit" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-accent hover:bg-accent/90">
-                <Search className="h-5 w-5" />
+              <Button type="submit" size="icon" className="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-accent hover:bg-accent/90">
+                <Search className="h-4 w-4" />
               </Button>
             </form>
           </div>
@@ -231,19 +231,19 @@ export default function AttractionsPage() {
       </section>
 
       <div className="bg-background">
-        <div className="container mx-auto px-4 py-12 max-w-6xl">
+        <div className="container mx-auto px-4 py-10 max-w-6xl">
             
           {/* Top Destinations */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-headline font-bold mb-6">Top destinations for attractions</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <section className="mb-12">
+            <h2 className="text-2xl font-headline font-bold mb-4">Top destinations for attractions</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
               {topDestinations.map(dest => (
                 <Link href={`/search?destination=${encodeURIComponent(dest.name)}`} key={dest.name}>
                     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
-                        <div className="relative aspect-[4/5]">
+                        <div className="relative aspect-[3/4]">
                             <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <h3 className="absolute bottom-3 left-3 text-white font-bold text-lg">{dest.name}</h3>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            <h3 className="absolute bottom-2 left-2 text-white font-bold text-base">{dest.name}</h3>
                         </div>
                     </Card>
                 </Link>
@@ -252,14 +252,14 @@ export default function AttractionsPage() {
           </section>
 
           {/* Categories */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-headline font-bold mb-6">Browse by category</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <section className="mb-12">
+            <h2 className="text-2xl font-headline font-bold mb-4">Browse by category</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
               {categories.map(cat => (
                 <Link href="#" key={cat.name}>
-                  <Card className="p-4 flex items-center gap-4 hover:bg-muted/50 hover:shadow-md transition-all">
-                    <div className="text-accent">{React.cloneElement(cat.icon, { className: "w-6 h-6" })}</div>
-                    <span className="font-semibold">{cat.name}</span>
+                  <Card className="p-3 flex items-center gap-3 hover:bg-muted/50 hover:shadow-md transition-all">
+                    <div className="text-accent">{React.cloneElement(cat.icon, { className: "w-5 h-5" })}</div>
+                    <span className="font-semibold text-sm">{cat.name}</span>
                   </Card>
                 </Link>
               ))}
@@ -267,9 +267,9 @@ export default function AttractionsPage() {
           </section>
 
           {/* Explore more destinations */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-headline font-bold">Explore more destinations</h2>
-            <p className="text-muted-foreground mb-6">Find things to do in cities around the world</p>
+          <section>
+            <h2 className="text-2xl font-headline font-bold">Explore more destinations</h2>
+            <p className="text-muted-foreground mb-4">Find things to do in cities around the world</p>
             <Tabs defaultValue="all" className="w-full">
               <TabsList className="flex flex-wrap h-auto justify-start bg-transparent p-0 mb-4 border-b rounded-none">
                 <TabsTrigger value="all">All</TabsTrigger>
@@ -309,3 +309,4 @@ export default function AttractionsPage() {
     </div>
   );
 }
+
