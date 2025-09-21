@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useForm } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
@@ -318,21 +318,27 @@ export default function CarRentalPage() {
               <TabsContent value="cities" className="mt-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-6">
                   {popularDestinations.map((dest) => (
-                    <div key={dest.name} className="flex items-center gap-4">
+                    <a 
+                        key={dest.name} 
+                        href={`https://www.google.com/search?q=car+rental+in+${encodeURIComponent(dest.name)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-4 group"
+                    >
                       <Image
                         src={dest.imageUrl}
                         alt={dest.name}
                         width={80}
                         height={80}
-                        className="rounded-lg object-cover w-20 h-20"
+                        className="rounded-lg object-cover w-20 h-20 transition-transform group-hover:scale-105"
                         data-ai-hint={dest.hint}
                       />
                       <div>
-                        <h4 className="font-semibold">{dest.name}</h4>
+                        <h4 className="font-semibold group-hover:text-primary transition-colors">{dest.name}</h4>
                         <p className="text-sm text-muted-foreground">{dest.locations} car rental locations</p>
                         <p className="text-sm">Average price of <span className="font-semibold text-primary">${dest.price.toFixed(2)}</span> per day</p>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
                 <Button variant="link" className="mt-4 px-0">Show more</Button>
@@ -363,3 +369,5 @@ export default function CarRentalPage() {
     </div>
   );
 }
+
+    
