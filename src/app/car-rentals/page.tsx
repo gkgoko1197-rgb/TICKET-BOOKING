@@ -100,7 +100,7 @@ const popularDestinations = [
 
 export default function CarRentalPage() {
   const [differentDropoff, setDifferentDropoff] = useState(false);
-  const [showDriverAge, setShowDriverAge] = useState(false);
+  const [showDriverAge, setShowDriverAge] = useState(true);
   
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
@@ -262,10 +262,10 @@ export default function CarRentalPage() {
                       </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                     <Checkbox id="driver-age" checked={!showDriverAge} onCheckedChange={(checked) => setShowDriverAge(!checked)} />
+                     <Checkbox id="driver-age" checked={showDriverAge} onCheckedChange={(checked) => setShowDriverAge(checked as boolean)} />
                      <Label htmlFor="driver-age">Driver's age is between 30 and 65</Label>
                   </div>
-                  {showDriverAge && (
+                  {!showDriverAge && (
                     <div className="max-w-xs">
                         <FormField
                             control={form.control}
@@ -379,4 +379,5 @@ export default function CarRentalPage() {
   );
 }
 
+    
     
