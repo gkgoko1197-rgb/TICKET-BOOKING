@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -28,14 +29,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import {
   MapPin,
   Calendar as CalendarIcon,
-  Clock,
   Search,
-  Users,
-  ShieldCheck,
-  Star,
   ThumbsUp,
-  Award
+  Award,
+  ShieldCheck,
+  Star
 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const searchSchema = z.object({
   pickupLocation: z.string().min(1, "Pick-up location is required"),
@@ -45,7 +45,6 @@ const searchSchema = z.object({
   pickupTime: z.string({ required_error: "Pick-up time is required" }),
   dropoffDate: z.date({ required_error: "Drop-off date is required" }),
   dropoffTime: z.string({ required_error: "Drop-off time is required" }),
-  driverAge: z.boolean(),
   age: z.string().optional(),
 });
 
@@ -86,18 +85,31 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
     return `${formattedHour}:${minute}`;
 });
 
+const popularDestinations = [
+    { name: 'El Segundo', locations: 103, price: 65, imageUrl: 'https://picsum.photos/seed/elsegundo/200/150', hint: 'cityscape' },
+    { name: 'Dania Beach', locations: 92, price: 50, imageUrl: 'https://picsum.photos/seed/dania/200/150', hint: 'beach' },
+    { name: 'Coolangatta', locations: 22, price: 58, imageUrl: 'https://picsum.photos/seed/coolangatta/200/150', hint: 'coastline' },
+    { name: 'Phoenix', locations: 78, price: 70, imageUrl: 'https://picsum.photos/seed/phoenix/200/150', hint: 'city buildings' },
+    { name: 'Jamaica', locations: 79, price: 85, imageUrl: 'https://picsum.photos/seed/jamaica/200/150', hint: 'tropical island' },
+    { name: 'Irving', locations: 81, price: 62, imageUrl: 'https://picsum.photos/seed/irving/200/150', hint: 'modern city' },
+    { name: 'Madrid', locations: 108, price: 52, imageUrl: 'https://picsum.photos/seed/madrid-car/200/150', hint: 'historic square' },
+    { name: 'Calgary', locations: 46, price: 68, imageUrl: 'https://picsum.photos/seed/calgary/200/150', hint: 'city skyline' },
+    { name: 'San Diego', locations: 87, price: 60, imageUrl: 'https://picsum.photos/seed/sandiego/200/150', hint: 'city waterfront' },
+];
+
 
 export default function CarRentalPage() {
   const [differentDropoff, setDifferentDropoff] = useState(false);
+  const [showDriverAge, setShowDriverAge] = useState(false);
   
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
       pickupLocation: "New York, NY",
       differentDropoff: false,
-      driverAge: true,
       pickupTime: '10:00',
       dropoffTime: '10:00',
+      age: '30-65',
     },
   });
 
@@ -250,9 +262,24 @@ export default function CarRentalPage() {
                       </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                     <Checkbox id="driver-age" defaultChecked />
+                     <Checkbox id="driver-age" checked={!showDriverAge} onCheckedChange={(checked) => setShowDriverAge(!checked)} />
                      <Label htmlFor="driver-age">Driver's age is between 30 and 65</Label>
                   </div>
+                  {showDriverAge && (
+                    <div className="max-w-xs">
+                        <FormField
+                            control={form.control}
+                            name="age"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Driver's Age</FormLabel>
+                                    <FormControl><Input placeholder="e.g. 25" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                  )}
                   <div className="pt-2">
                     <Button type="submit" className="w-full md:w-auto h-12 px-12 bg-accent text-lg">
                       <Search className="mr-2"/>
@@ -294,6 +321,44 @@ export default function CarRentalPage() {
           </section>
 
           <Separator className="my-12"/>
+
+          <section className="mb-12">
+            <h2 className="text-2xl font-headline font-bold mb-2">Popular car rental destinations</h2>
+            <p className="text-muted-foreground mb-4">Explore more options to rent a car for cheap</p>
+            <Tabs defaultValue="cities">
+              <TabsList>
+                <TabsTrigger value="cities">Cities worldwide</TabsTrigger>
+                <TabsTrigger value="airports">Airports worldwide</TabsTrigger>
+              </TabsList>
+              <TabsContent value="cities" className="mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-6">
+                  {popularDestinations.map((dest) => (
+                    <div key={dest.name} className="flex items-center gap-4">
+                      <Image
+                        src={dest.imageUrl}
+                        alt={dest.name}
+                        width={80}
+                        height={80}
+                        className="rounded-lg object-cover w-20 h-20"
+                        data-ai-hint={dest.hint}
+                      />
+                      <div>
+                        <h4 className="font-semibold">{dest.name}</h4>
+                        <p className="text-sm text-muted-foreground">{dest.locations} car rental locations</p>
+                        <p className="text-sm">Average price of <span className="font-semibold text-primary">${dest.price.toFixed(2)}</span> per day</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="link" className="mt-4 px-0">Show more</Button>
+              </TabsContent>
+              <TabsContent value="airports" className="mt-6">
+                <p className="text-muted-foreground">Airport car rental information will be available soon.</p>
+              </TabsContent>
+            </Tabs>
+          </section>
+
+          <Separator className="my-12"/>
           
           <section className="mb-12">
              <h2 className="text-2xl font-headline font-bold mb-4">Frequently asked questions</h2>
@@ -313,3 +378,5 @@ export default function CarRentalPage() {
     </div>
   );
 }
+
+    
