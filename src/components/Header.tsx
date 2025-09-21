@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { Home, Plane, Car, Sparkles, Building, CircleHelp, Bell } from "lucide-react";
 import { Button } from "./ui/button";
@@ -40,7 +39,7 @@ export default function Header() {
                       </Link>
                   </Button>
                   <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
-                      <Link href="#">
+                      <Link href="/car-rentals">
                           <Car className="mr-2" />
                           Car rentals
                       </Link>
