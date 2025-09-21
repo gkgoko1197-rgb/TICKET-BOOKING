@@ -40,7 +40,7 @@ export default function SearchResults({
       if (amenities.length > 0 && !amenities.every(a => acc.amenities.includes(a as any))) return false;
       
       const destination = searchParams.get("destination");
-      if (destination && !acc.city.toLowerCase().includes(destination.toLowerCase())) {
+      if (destination && !acc.location.city.toLowerCase().includes(destination.toLowerCase())) {
         return false;
       }
       
