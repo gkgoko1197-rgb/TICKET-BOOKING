@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Accommodation } from "@/lib/data";
 import FilterSidebar from "@/components/FilterSidebar";
 import AccommodationList from "@/components/AccommodationList";
@@ -14,10 +15,8 @@ type Filters = {
 
 export default function SearchResults({
   accommodations,
-  searchParams,
 }: {
   accommodations: Accommodation[];
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const [isClient, setIsClient] = useState(false);
   const [filters, setFilters] = useState<Filters>({
@@ -27,6 +26,7 @@ export default function SearchResults({
   });
   
   const [highlighted, setHighlighted] = useState<string[]>([]);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     setIsClient(true);
@@ -39,7 +39,7 @@ export default function SearchResults({
       if (rating > 0 && acc.rating < rating) return false;
       if (amenities.length > 0 && !amenities.every(a => acc.amenities.includes(a as any))) return false;
       
-      const destination = searchParams.destination as string;
+      const destination = searchParams.get("destination");
       if (destination && !acc.city.toLowerCase().includes(destination.toLowerCase())) {
         return false;
       }
@@ -58,7 +58,9 @@ export default function SearchResults({
     }
 
     return filtered;
-  }, [accommodations, filters, highlighted, searchParams.destination]);
+  }, [accommodations, filters, highlighted, searchParams]);
+
+  const destination = searchParams.get("destination");
 
   if (!isClient) {
     return (
@@ -85,7 +87,7 @@ export default function SearchResults({
       </div>
       <div className="lg:col-span-3">
         <h2 className="text-2xl font-headline font-semibold mb-4">
-            {searchParams.destination ? `${searchParams.destination}: ` : ''} 
+            {destination ? `${destination}: ` : ''} 
             {filteredAccommodations.length} properties found
         </h2>
         <AccommodationList accommodations={filteredAccommodations} highlighted={highlighted} />
