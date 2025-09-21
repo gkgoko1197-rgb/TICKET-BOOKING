@@ -48,10 +48,6 @@ const searchSchema = z.object({
   age: z.string().optional(),
 });
 
-const popularBrands = [
-  "Avis", "Budget", "Hertz", "Sixt", "Europcar", "Alamo", "Enterprise", "National", "Dollar", "Thrifty"
-];
-
 const faqs = [
     {
       question: "What do I need to rent a car?",
@@ -312,17 +308,6 @@ export default function CarRentalPage() {
           <Separator className="my-12"/>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-headline font-bold mb-4 text-center">Popular car rental brands</h2>
-             <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-muted-foreground">
-                {popularBrands.map(brand => (
-                    <span key={brand} className="text-lg font-medium">{brand}</span>
-                ))}
-            </div>
-          </section>
-
-          <Separator className="my-12"/>
-
-          <section className="mb-12">
             <h2 className="text-2xl font-headline font-bold mb-2">Popular car rental destinations</h2>
             <p className="text-muted-foreground mb-4">Explore more options to rent a car for cheap</p>
             <Tabs defaultValue="cities">
@@ -378,6 +363,3 @@ export default function CarRentalPage() {
     </div>
   );
 }
-
-    
-    
