@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -48,7 +49,7 @@ export default function AiRecommender({ onRecommendations }: AiRecommenderProps)
       numberOfRecommendations: 3,
     });
 
-    if (result.success && result.data) {
+    if (result.success && result.data && result.data.length > 0) {
       toast({
         title: "AI Recommendations Ready!",
         description: "We've highlighted some top picks for you.",
@@ -58,9 +59,10 @@ export default function AiRecommender({ onRecommendations }: AiRecommenderProps)
     } else {
       toast({
         title: "Error",
-        description: result.error || "Could not fetch AI recommendations.",
+        description: result.error || "Could not fetch AI recommendations or no recommendations were found.",
         variant: "destructive",
       });
+      onRecommendations([]);
     }
 
     setIsLoading(false);

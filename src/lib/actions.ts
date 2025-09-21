@@ -1,3 +1,4 @@
+
 "use server";
 
 import {
@@ -8,12 +9,14 @@ import {
   generateIdealBookingForm,
   GenerateIdealBookingFormInput,
 } from "@/ai/flows/generate-ideal-booking-form";
+import { accommodations } from "./data";
 
 export async function getAIRecommendations(
   input: PersonalizedAccommodationRecommendationsInput
 ) {
   try {
-    const recommendations = await personalizedAccommodationRecommendations(input);
+    const accommodationNames = accommodations.map(acc => acc.name);
+    const recommendations = await personalizedAccommodationRecommendations({...input, accommodationNames});
     return { success: true, data: recommendations };
   } catch (error) {
     console.error("AI Recommendation Error:", error);

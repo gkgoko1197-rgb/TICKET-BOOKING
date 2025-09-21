@@ -1,3 +1,4 @@
+
 // This is a server-side file.
 'use server';
 
@@ -25,6 +26,7 @@ const PersonalizedAccommodationRecommendationsInputSchema = z.object({
     .string()
     .describe('The past booking history of the user, including locations, dates, and accommodation types.'),
   numberOfRecommendations: z.number().describe('The number of recommendations to return.'),
+  accommodationNames: z.array(z.string()).describe('A list of available accommodation names to choose from.'),
 });
 
 export type PersonalizedAccommodationRecommendationsInput = z.infer<
@@ -56,6 +58,11 @@ const personalizedAccommodationRecommendationsPrompt = ai.definePrompt({
   input: {schema: PersonalizedAccommodationRecommendationsInputSchema},
   output: {schema: PersonalizedAccommodationRecommendationsOutputSchema},
   prompt: `Based on the user's preferences and booking history, recommend a list of accommodations.
+
+You MUST only recommend accommodations from the following list:
+{{#each accommodationNames}}
+- {{{this}}}
+{{/each}}
 
 User Preferences: {{{userPreferences}}}
 Booking History: {{{bookingHistory}}}
