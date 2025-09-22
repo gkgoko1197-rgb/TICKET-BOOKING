@@ -26,7 +26,6 @@ const categories = [
     { name: 'Museums', icon: <Landmark /> },
     { name: 'Activities', icon: <Palmtree /> },
     { name: 'Adventures', icon: <Mountain /> },
-    { name: 'Tickets', icon: <Ticket /> },
 ];
 
 const europeDestinations = [
