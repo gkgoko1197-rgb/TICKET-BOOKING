@@ -1,12 +1,12 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Ticket, Landmark, Mountain, Palmtree } from 'lucide-react';
+import { Search, MapPin, Ticket, Landmark, Mountain, Palmtree, X } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/navigation';
@@ -168,6 +168,25 @@ const allDestinations = [
     ...southAmericaDestinations,
 ];
 
+// Function to shuffle an array
+const shuffleArray = <T,>(array: T[]): T[] => {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+}
+
 const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       {destinations.map((dest) => (
@@ -191,11 +210,28 @@ const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinat
 export default function AttractionsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const categorizedDestinations = useMemo(() => {
+    if (!activeCategory) return [];
+    const shuffled = shuffleArray([...allDestinations]);
+    const count = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
+    return shuffled.slice(0, count);
+  }, [activeCategory]);
+
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/search?destination=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+  
+  const handleCategoryClick = (categoryName: string) => {
+    if (activeCategory === categoryName) {
+        setActiveCategory(null); // Deselect if clicking the same category
+    } else {
+        setActiveCategory(categoryName);
     }
   };
 
@@ -256,52 +292,64 @@ export default function AttractionsPage() {
             <h2 className="text-2xl font-headline font-bold mb-4">Browse by category</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
               {categories.map(cat => (
-                <Link href="#" key={cat.name}>
-                  <Card className="p-3 flex items-center gap-3 hover:bg-muted/50 hover:shadow-md transition-all">
-                    <div className="text-accent">{React.cloneElement(cat.icon, { className: "w-5 h-5" })}</div>
-                    <span className="font-semibold text-sm">{cat.name}</span>
-                  </Card>
-                </Link>
+                <Button variant={activeCategory === cat.name ? "default" : "outline"} className="justify-start p-3 h-auto" onClick={() => handleCategoryClick(cat.name)} key={cat.name}>
+                    <div className={activeCategory === cat.name ? "text-primary-foreground" : "text-accent"}>{React.cloneElement(cat.icon, { className: "w-5 h-5" })}</div>
+                    <span className="font-semibold text-sm ml-3">{cat.name}</span>
+                </Button>
               ))}
             </div>
           </section>
 
           {/* Explore more destinations */}
           <section>
-            <h2 className="text-2xl font-headline font-bold">Explore more destinations</h2>
-            <p className="text-muted-foreground mb-4">Find things to do in cities around the world</p>
-            <Tabs defaultValue="all" className="w-full">
-              <TabsList className="flex flex-wrap h-auto justify-start bg-transparent p-0 mb-4 border-b rounded-none">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="europe">Europe</TabsTrigger>
-                <TabsTrigger value="north-america">North America</TabsTrigger>
-                <TabsTrigger value="asia">Asia</TabsTrigger>
-                <TabsTrigger value="africa">Africa</TabsTrigger>
-                <TabsTrigger value="oceania">Oceania</TabsTrigger>
-                <TabsTrigger value="south-america">South America</TabsTrigger>
-              </TabsList>
-              <TabsContent value="all">
-                <DestinationGrid destinations={allDestinations} />
-              </TabsContent>
-              <TabsContent value="europe">
-                <DestinationGrid destinations={europeDestinations} />
-              </TabsContent>
-               <TabsContent value="north-america">
-                 <DestinationGrid destinations={northAmericaDestinations} />
-               </TabsContent>
-               <TabsContent value="asia">
-                 <DestinationGrid destinations={asiaDestinations} />
+            {activeCategory ? (
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-2xl font-headline font-bold">Results for {activeCategory}</h2>
+                        <Button variant="ghost" onClick={() => setActiveCategory(null)}>
+                            <X className="mr-2 h-4 w-4" /> Clear
+                        </Button>
+                    </div>
+                    <DestinationGrid destinations={categorizedDestinations} />
+                </div>
+            ) : (
+                <>
+                <h2 className="text-2xl font-headline font-bold">Explore more destinations</h2>
+                <p className="text-muted-foreground mb-4">Find things to do in cities around the world</p>
+                <Tabs defaultValue="all" className="w-full">
+                <TabsList className="flex flex-wrap h-auto justify-start bg-transparent p-0 mb-4 border-b rounded-none">
+                    <TabsTrigger value="all">All</TabsTrigger>
+                    <TabsTrigger value="europe">Europe</TabsTrigger>
+                    <TabsTrigger value="north-america">North America</TabsTrigger>
+                    <TabsTrigger value="asia">Asia</TabsTrigger>
+                    <TabsTrigger value="africa">Africa</TabsTrigger>
+                    <TabsTrigger value="oceania">Oceania</TabsTrigger>
+                    <TabsTrigger value="south-america">South America</TabsTrigger>
+                </TabsList>
+                <TabsContent value="all">
+                    <DestinationGrid destinations={allDestinations} />
                 </TabsContent>
-                <TabsContent value="africa">
-                    <DestinationGrid destinations={africaDestinations} />
+                <TabsContent value="europe">
+                    <DestinationGrid destinations={europeDestinations} />
                 </TabsContent>
-                <TabsContent value="oceania">
-                    <DestinationGrid destinations={oceaniaDestinations} />
+                <TabsContent value="north-america">
+                    <DestinationGrid destinations={northAmericaDestinations} />
                 </TabsContent>
-                <TabsContent value="south-america">
-                    <DestinationGrid destinations={southAmericaDestinations} />
-                </TabsContent>
-            </Tabs>
+                <TabsContent value="asia">
+                    <DestinationGrid destinations={asiaDestinations} />
+                    </TabsContent>
+                    <TabsContent value="africa">
+                        <DestinationGrid destinations={africaDestinations} />
+                    </TabsContent>
+                    <TabsContent value="oceania">
+                        <DestinationGrid destinations={oceaniaDestinations} />
+                    </TabsContent>
+                    <TabsContent value="south-america">
+                        <DestinationGrid destinations={southAmericaDestinations} />
+                    </TabsContent>
+                </Tabs>
+                </>
+            )}
           </section>
 
         </div>
@@ -309,4 +357,3 @@ export default function AttractionsPage() {
     </div>
   );
 }
-
