@@ -21,11 +21,11 @@ export default function Header() {
             </span>
           </Link>
           <div className="flex items-center gap-4">
-              <Button variant="ghost" className="hover:bg-white/10">
+              <Button variant="ghost" className="hover:bg-white/10" asChild>
+                <Link href="/help">
                   <CircleHelp className="mr-2"/>
-              </Button>
-              <Button variant="ghost" className="hover:bg-white/10">
-                  <Bell className="mr-2"/>
+                  Help
+                </Link>
               </Button>
               <Button 
                 variant="outline" 
