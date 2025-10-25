@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
@@ -41,6 +42,7 @@ const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function SignInPage() {
     const { toast } = useToast();
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -52,7 +54,10 @@ export default function SignInPage() {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
-        // Handle email sign-in logic here
+        toast({
+            title: "Successfully signed in!",
+        });
+        router.push("/");
     }
 
     function handleSocialClick() {
