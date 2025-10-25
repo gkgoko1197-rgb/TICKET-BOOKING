@@ -55,7 +55,7 @@ export default function TaxiBookingDialog({ drivers: initialDrivers }: TaxiBooki
                 <Card key={currentDriver.id}>
                     <CardContent className="p-4 flex items-center gap-4">
                         <Avatar className="h-16 w-16">
-                            <AvatarImage src={`https://i.pravatar.cc/150?u=${currentDriver.id}`} alt={currentDriver.name} />
+                            <AvatarImage src={`https://i.pravatar.cc/150?u=${currentDriver.id}`} alt={currentDriver.name} data-ai-hint="driver portrait" />
                             <AvatarFallback>{currentDriver.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-grow">
