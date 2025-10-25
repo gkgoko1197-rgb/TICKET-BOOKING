@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +37,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import FlightBookingForm from "@/components/FlightBookingForm";
 
 
 const flightSearchSchema = z.object({
@@ -82,7 +84,23 @@ const faqs = [
     },
 ];
 
+const flightNames = [
+    "AeroWing Swift", "SkyLiner Express", "StarJet Voyager", "Quantum Airlines",
+    "Velocity Air", "Celestial Ways", "Horizon Wings", "Nimbus Airways",
+    "Apex Flights", "Solaris Express", "Azure Airlines", "Pinnacle Jet",
+    "Equinox Air", "Orion Flights", "Meridian Airways", "Terra Jet",
+    "Galaxy Wings", "Phoenix Air", "Stratus Flights", "Odyssey Airlines"
+];
+
 export default function FlightsPage() {
+  const [isClient, setIsClient] = useState(false);
+  const [randomFlight, setRandomFlight] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const form = useForm<z.infer<typeof flightSearchSchema>>({
     resolver: zodResolver(flightSearchSchema),
     defaultValues: {
@@ -97,10 +115,12 @@ export default function FlightsPage() {
 
   const tripType = form.watch("tripType");
 
-  function onSubmit(values: z.infer<typeof flightSearchSchema>) {
-    console.log(values);
-    // Handle form submission
-  }
+  const handleBookNowClick = () => {
+    const randomIndex = Math.floor(Math.random() * flightNames.length);
+    setRandomFlight(flightNames[randomIndex]);
+    setIsDialogOpen(true);
+  };
+
 
   const handleSwap = () => {
     const from = form.getValues("from");
@@ -129,7 +149,7 @@ export default function FlightsPage() {
           <Card>
             <CardContent className="p-4">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form className="space-y-4">
                   <div className="flex items-center space-x-4">
                     <FormField
                         control={form.control}
@@ -278,10 +298,20 @@ export default function FlightsPage() {
                             </PopoverContent>
                         </Popover>
                      </div>
-                     <Button type="submit" className="h-12 w-full md:w-auto text-lg bg-accent hover:bg-accent/90">
-                        <Search className="mr-2"/>
-                        Search
-                    </Button>
+                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button type="button" className="h-12 w-full md:w-auto text-lg bg-accent hover:bg-accent/90" onClick={handleBookNowClick}>
+                                <Search className="mr-2"/>
+                                Book Now
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Book your flight</DialogTitle>
+                            </DialogHeader>
+                            {isClient && randomFlight && <FlightBookingForm flightName={randomFlight} onBookingSuccess={() => setIsDialogOpen(false)} />}
+                        </DialogContent>
+                    </Dialog>
                   </div>
                   <FormField
                     control={form.control}
@@ -357,5 +387,3 @@ export default function FlightsPage() {
     </div>
   );
 }
-
-    
