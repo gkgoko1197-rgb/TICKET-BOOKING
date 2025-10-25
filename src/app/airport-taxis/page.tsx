@@ -15,6 +15,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -98,6 +99,7 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 export default function AirportTaxisPage() {
     const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
     const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
+    const [bookingDetails, setBookingDetails] = useState<{ from: string; to: string } | null>(null);
 
     const form = useForm<z.infer<typeof taxiSearchSchema>>({
         resolver: zodResolver(taxiSearchSchema),
@@ -122,7 +124,7 @@ export default function AirportTaxisPage() {
 
 
     function onSearch(data: z.infer<typeof taxiSearchSchema>) {
-        console.log(data);
+        setBookingDetails({ from: data.from, to: data.to });
         setIsTaxiDialogOpen(true);
     }
 
@@ -163,10 +165,10 @@ export default function AirportTaxisPage() {
                                 />
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
                                         <FormField control={form.control} name="from" render={({ field }) => (
-                                            <FormItem><FormLabel>From pick-up location</FormLabel><FormControl><Input placeholder="e.g. Airport or Address" {...field} /></FormControl></FormItem>
+                                            <FormItem><FormLabel>From pick-up location</FormLabel><FormControl><Input placeholder="e.g. Airport or Address" {...field} /></FormControl><FormMessage /></FormItem>
                                         )} />
                                         <FormField control={form.control} name="to" render={({ field }) => (
-                                            <FormItem><FormLabel>To drop-off destination</FormLabel><FormControl><Input placeholder="e.g. Hotel or Address" {...field} /></FormControl></FormItem>
+                                            <FormItem><FormLabel>To drop-off destination</FormLabel><FormControl><Input placeholder="e.g. Hotel or Address" {...field} /></FormControl><FormMessage /></FormItem>
                                         )} />
                                         <div className="grid grid-cols-2 gap-2">
                                             <FormField control={form.control} name="date" render={({ field }) => (
@@ -177,6 +179,7 @@ export default function AirportTaxisPage() {
                                                         {field.value ? format(field.value, "MMM dd") : <span>Pick a date</span>}
                                                     </Button>
                                                 </FormControl></PopoverTrigger><PopoverContent className="w-auto p-0"><Calendar mode="single" selected={field.value} onSelect={field.onChange} /></PopoverContent></Popover>
+                                                <FormMessage />
                                                 </FormItem>
                                             )} />
                                             <FormField control={form.control} name="time" render={({ field }) => (
@@ -202,7 +205,7 @@ export default function AirportTaxisPage() {
                                                     <DialogHeader>
                                                         <DialogTitle className="font-headline">Available Taxis</DialogTitle>
                                                     </DialogHeader>
-                                                    <TaxiBookingDialog drivers={drivers} />
+                                                    <TaxiBookingDialog drivers={drivers} bookingDetails={bookingDetails} />
                                                 </DialogContent>
                                             </Dialog>
                                         </div>
@@ -321,3 +324,5 @@ export default function AirportTaxisPage() {
         </div>
     )
 }
+
+    

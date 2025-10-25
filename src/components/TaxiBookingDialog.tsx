@@ -6,14 +6,16 @@ import { TaxiDriver } from "@/lib/taxis";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Phone, Star, User, Car, X, Check } from "lucide-react";
+import { Phone, Star, User, Car, X, Check, MapPin, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "./ui/separator";
 
 interface TaxiBookingDialogProps {
     drivers: TaxiDriver[];
+    bookingDetails: { from: string; to: string } | null;
 }
 
-export default function TaxiBookingDialog({ drivers: initialDrivers }: TaxiBookingDialogProps) {
+export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDetails }: TaxiBookingDialogProps) {
     const { toast } = useToast();
     const [drivers, setDrivers] = useState(initialDrivers);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -79,9 +81,27 @@ export default function TaxiBookingDialog({ drivers: initialDrivers }: TaxiBooki
                             </Button>
                         </div>
                     </CardContent>
+                    {bookingDetails && (
+                        <>
+                        <Separator />
+                        <CardContent className="p-4 text-sm">
+                            <div className="flex items-center gap-2">
+                                <MapPin className="text-muted-foreground" size={16} />
+                                <span className="font-semibold">From:</span>
+                                <span>{bookingDetails.from}</span>
+                            </div>
+                            <div className="flex items-center gap-2 mt-2">
+                                <MapPin className="text-muted-foreground" size={16} />
+                                <span className="font-semibold">To:</span>
+                                <span>{bookingDetails.to}</span>
+                            </div>
+                        </CardContent>
+                        </>
+                    )}
                 </Card>
             </div>
         </div>
     );
 }
 
+    
