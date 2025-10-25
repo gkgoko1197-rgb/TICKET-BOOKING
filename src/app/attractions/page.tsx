@@ -186,29 +186,41 @@ const shuffleArray = <T,>(array: T[]): T[] => {
     return array;
 }
 
-const DestinationGrid = ({ destinations }: { destinations: typeof europeDestinations }) => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-      {destinations.map((dest) => (
-        <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
-          <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
-              <div className="relative aspect-square">
-                  <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-2 left-3">
-                    <h3 className="text-white font-bold text-base">{dest.name}</h3>
-                    <p className="text-white/90 text-xs">{dest.thingsToDo} things to do</p>
+type Destination = (typeof allDestinations)[0];
+
+const DestinationGrid = ({ destinations, emptyText = "No destinations found." }: { destinations: Destination[], emptyText?: string }) => {
+    if (destinations.length === 0) {
+        return (
+            <div className="text-center text-muted-foreground py-10">
+                <p>{emptyText}</p>
+            </div>
+        );
+    }
+    return (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {destinations.map((dest) => (
+            <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
+              <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
+                  <div className="relative aspect-square">
+                      <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                      <div className="absolute bottom-2 left-3">
+                        <h3 className="text-white font-bold text-base">{dest.name}</h3>
+                        <p className="text-white/90 text-xs">{dest.thingsToDo} things to do</p>
+                      </div>
                   </div>
-              </div>
-          </Card>
-        </a>
-      ))}
-    </div>
-);
+              </Card>
+            </a>
+          ))}
+        </div>
+    );
+};
 
 
 export default function AttractionsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Destination[] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const categorizedDestinations = useMemo(() => {
@@ -221,8 +233,13 @@ export default function AttractionsPage() {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?destination=${encodeURIComponent(searchQuery.trim())}`);
+    const query = searchQuery.trim().toLowerCase();
+    if (query) {
+      const results = allDestinations.filter(dest => dest.name.toLowerCase().includes(query));
+      setSearchResults(results);
+      setActiveCategory(null);
+    } else {
+      setSearchResults(null);
     }
   };
   
@@ -231,8 +248,17 @@ export default function AttractionsPage() {
         setActiveCategory(null); // Deselect if clicking the same category
     } else {
         setActiveCategory(categoryName);
+        setSearchResults(null);
     }
   };
+
+  const clearFilters = () => {
+    setActiveCategory(null);
+    setSearchResults(null);
+    setSearchQuery('');
+  }
+
+  const isFiltered = activeCategory || searchResults;
 
   return (
     <div className="flex flex-col">
@@ -289,7 +315,7 @@ export default function AttractionsPage() {
           {/* Categories */}
           <section className="mb-12">
             <h2 className="text-2xl font-headline font-bold mb-4">Browse by category</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {categories.map(cat => (
                 <Button variant={activeCategory === cat.name ? "default" : "outline"} className="justify-start p-3 h-auto" onClick={() => handleCategoryClick(cat.name)} key={cat.name}>
                     <div className={activeCategory === cat.name ? "text-primary-foreground" : "text-accent"}>{React.cloneElement(cat.icon, { className: "w-5 h-5" })}</div>
@@ -301,15 +327,18 @@ export default function AttractionsPage() {
 
           {/* Explore more destinations */}
           <section>
-            {activeCategory ? (
+            {isFiltered ? (
                 <div>
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-headline font-bold">Results for {activeCategory}</h2>
-                        <Button variant="ghost" onClick={() => setActiveCategory(null)}>
+                        <h2 className="text-2xl font-headline font-bold">
+                            {searchResults !== null ? `Search Results for "${searchQuery}"` : `Results for ${activeCategory}`}
+                        </h2>
+                        <Button variant="ghost" onClick={clearFilters}>
                             <X className="mr-2 h-4 w-4" /> Clear
                         </Button>
                     </div>
-                    <DestinationGrid destinations={categorizedDestinations} />
+                    {searchResults !== null && <DestinationGrid destinations={searchResults} emptyText="No destinations found for your search."/>}
+                    {activeCategory && <DestinationGrid destinations={categorizedDestinations} />}
                 </div>
             ) : (
                 <>
@@ -356,3 +385,5 @@ export default function AttractionsPage() {
     </div>
   );
 }
+
+    
