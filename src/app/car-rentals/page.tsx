@@ -1,13 +1,14 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
-
+import TaxiBookingDialog from "@/components/TaxiBookingDialog";
+import { taxiDrivers } from "@/lib/taxis";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,9 +34,11 @@ import {
   ThumbsUp,
   Award,
   ShieldCheck,
-  Star
+  Star,
+  Car,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const searchSchema = z.object({
   pickupLocation: z.string().min(1, "Pick-up location is required"),
@@ -46,6 +49,7 @@ const searchSchema = z.object({
   dropoffDate: z.date({ required_error: "Drop-off date is required" }),
   dropoffTime: z.string({ required_error: "Drop-off time is required" }),
   age: z.string().optional(),
+  isDriverAgeRestricted: z.boolean(),
 });
 
 const faqs = [
@@ -96,7 +100,8 @@ const popularDestinations = [
 
 export default function CarRentalPage() {
   const [differentDropoff, setDifferentDropoff] = useState(false);
-  const [showDriverAge, setShowDriverAge] = useState(true);
+  const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
+  const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
   
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
@@ -106,12 +111,22 @@ export default function CarRentalPage() {
       pickupTime: '10:00',
       dropoffTime: '10:00',
       age: '30-65',
+      isDriverAgeRestricted: true,
     },
   });
 
-  function onSubmit(values: z.infer<typeof searchSchema>) {
+  const drivers = useMemo(() => {
+    const allDrivers = [...taxiDrivers].sort(() => 0.5 - Math.random());
+    if (isDriverAgeRestricted) {
+      return allDrivers.filter(d => d.age >= 30 && d.age <= 65);
+    }
+    return allDrivers;
+  }, [isDriverAgeRestricted, isTaxiDialogOpen]);
+
+
+  function onSearchSubmit(values: z.infer<typeof searchSchema>) {
     console.log(values);
-    // Handle form submission
+    setIsTaxiDialogOpen(true);
   }
 
   return (
@@ -134,7 +149,7 @@ export default function CarRentalPage() {
           <Card>
             <CardContent className="p-4">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={form.handleSubmit(onSearchSubmit)} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
@@ -151,7 +166,7 @@ export default function CarRentalPage() {
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="different-dropoff" onCheckedChange={(checked) => setDifferentDropoff(checked as boolean)} />
+                    <Checkbox id="different-dropoff" checked={differentDropoff} onCheckedChange={(checked) => setDifferentDropoff(checked as boolean)} />
                     <Label htmlFor="different-dropoff">Drop car off at different location</Label>
                   </div>
                   {differentDropoff && (
@@ -257,11 +272,19 @@ export default function CarRentalPage() {
                         />
                       </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                     <Checkbox id="driver-age" checked={showDriverAge} onCheckedChange={(checked) => setShowDriverAge(checked as boolean)} />
-                     <Label htmlFor="driver-age">Driver's age is between 30 and 65</Label>
-                  </div>
-                  {!showDriverAge && (
+                   <FormField
+                    control={form.control}
+                    name="isDriverAgeRestricted"
+                    render={({ field }) => (
+                        <FormItem className="flex items-center space-x-2">
+                            <FormControl>
+                                <Checkbox checked={field.value} onCheckedChange={(checked) => { field.onChange(checked); setIsDriverAgeRestricted(checked as boolean); }} id="driver-age"/>
+                            </FormControl>
+                            <Label htmlFor="driver-age" className="font-normal">Driver's age is between 30 and 65</Label>
+                        </FormItem>
+                    )}
+                    />
+                  {!isDriverAgeRestricted && (
                     <div className="max-w-xs">
                         <FormField
                             control={form.control}
@@ -277,10 +300,20 @@ export default function CarRentalPage() {
                     </div>
                   )}
                   <div className="pt-2">
-                    <Button type="submit" className="w-full md:w-auto h-12 px-12 bg-accent text-lg">
-                      <Search className="mr-2"/>
-                      Search
-                    </Button>
+                    <Dialog open={isTaxiDialogOpen} onOpenChange={setIsTaxiDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button type="submit" className="w-full md:w-auto h-12 px-12 bg-accent text-lg">
+                              <Car className="mr-2"/>
+                              Book a Taxi
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[600px]">
+                            <DialogHeader>
+                                <DialogTitle className="font-headline">Available Taxis</DialogTitle>
+                            </DialogHeader>
+                            <TaxiBookingDialog drivers={drivers} />
+                        </DialogContent>
+                    </Dialog>
                   </div>
                 </form>
               </Form>
@@ -369,3 +402,5 @@ export default function CarRentalPage() {
     </div>
   );
 }
+
+    
