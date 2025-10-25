@@ -40,6 +40,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import FlightBookingForm from "@/components/FlightBookingForm";
 import { useSearchParams } from "next/navigation";
+import React from "react";
 
 
 const flightSearchSchema = z.object({
