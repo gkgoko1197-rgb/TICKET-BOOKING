@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useBooking } from "@/context/BookingContext";
 
 const bookingSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -27,17 +28,22 @@ const bookingSchema = z.object({
   flightName: z.string(),
   departureTime: z.string(),
   arrivalTime: z.string(),
+  from: z.string(),
+  to: z.string(),
 });
 
 type BookingFormValues = z.infer<typeof bookingSchema>;
 
 interface FlightBookingFormProps {
   flightName: string;
+  from: string;
+  to: string;
   onBookingSuccess: () => void;
 }
 
-export default function FlightBookingForm({ flightName, onBookingSuccess }: FlightBookingFormProps) {
+export default function FlightBookingForm({ flightName, from, to, onBookingSuccess }: FlightBookingFormProps) {
   const { toast } = useToast();
+  const { addBooking } = useBooking();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<BookingFormValues>({
@@ -51,6 +57,8 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
       flightName: flightName,
       departureTime: "08:00 AM",
       arrivalTime: "10:30 AM",
+      from,
+      to,
     },
   });
 
@@ -58,6 +66,15 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
     setIsLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    addBooking({
+      id: `flt-${Date.now()}`,
+      type: 'flight',
+      title: data.flightName,
+      details: `From ${data.from} to ${data.to}`,
+      date: new Date().toISOString(),
+    });
+
     setIsLoading(false);
     
     toast({
@@ -141,55 +158,78 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
         </div>
         
         <div className="space-y-4 rounded-md bg-muted p-3">
-            <h4 className="text-sm font-semibold">Flight Details</h4>
+          <h4 className="text-sm font-semibold">Flight Details</h4>
+           <div className="grid grid-cols-2 gap-4">
             <FormField
-                control={form.control}
-                name="flightName"
-                render={({ field }) => (
+              control={form.control}
+              name="from"
+              render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Flight</FormLabel>
-                    <FormControl>
+                  <FormLabel>From</FormLabel>
+                  <FormControl>
                     <Input readOnly {...field} />
-                    </FormControl>
-                    <FormMessage />
+                  </FormControl>
                 </FormItem>
-                )}
+              )}
             />
-            <div className="grid grid-cols-2 gap-4">
-                <FormField
-                    control={form.control}
-                    name="departureTime"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Departure</FormLabel>
-                        <FormControl>
-                        <Input readOnly {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="arrivalTime"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Arrival</FormLabel>
-                        <FormControl>
-                        <Input readOnly {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-            </div>
+            <FormField
+              control={form.control}
+              name="to"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>To</FormLabel>
+                  <FormControl>
+                    <Input readOnly {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="flightName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Flight</FormLabel>
+                <FormControl>
+                  <Input readOnly {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="departureTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Departure</FormLabel>
+                  <FormControl>
+                    <Input readOnly {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="arrivalTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Arrival</FormLabel>
+                  <FormControl>
+                    <Input readOnly {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}
-          Book
+          Confirm Booking
         </Button>
       </form>
     </Form>

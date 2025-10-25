@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +40,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import FlightBookingForm from "@/components/FlightBookingForm";
 import { useSearchParams } from "next/navigation";
-import React from "react";
 
 
 const flightSearchSchema = z.object({
@@ -119,6 +118,8 @@ function FlightPageContent() {
   });
 
   const tripType = form.watch("tripType");
+  const fromValue = form.watch("from");
+  const toValue = form.watch("to");
 
   const handleBookNowClick = () => {
     const randomIndex = Math.floor(Math.random() * flightNames.length);
@@ -314,7 +315,7 @@ function FlightPageContent() {
                             <DialogHeader>
                                 <DialogTitle>Book your flight</DialogTitle>
                             </DialogHeader>
-                            {isClient && randomFlight && <FlightBookingForm flightName={randomFlight} onBookingSuccess={() => setIsDialogOpen(false)} />}
+                            {isClient && randomFlight && <FlightBookingForm flightName={randomFlight} from={fromValue} to={toValue} onBookingSuccess={() => setIsDialogOpen(false)} />}
                         </DialogContent>
                     </Dialog>
                   </div>

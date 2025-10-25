@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CreditCard, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useBooking } from "@/context/BookingContext";
 
 const bookingFormSchema = z.object({
   fullName: z.string().min(2, { message: "Full name must be at least 2 characters." }),
@@ -52,6 +53,7 @@ type BookingFormValues = z.infer<typeof bookingFormSchema>;
 export default function BookingPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { toast } = useToast();
+  const { addBooking } = useBooking();
   const [isLoading, setIsLoading] = useState(false);
   const accommodation = accommodations.find((acc) => acc.id === params.id);
 
@@ -79,12 +81,20 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    addBooking({
+      id: `acc-${Date.now()}`,
+      type: 'accommodation',
+      title: accommodation.name,
+      details: `${accommodation.location.city}`,
+      date: new Date().toISOString(),
+    });
+
     setIsLoading(false);
     toast({
       title: "Booking Confirmed!",
       description: `Your stay at ${accommodation.name} has been booked.`,
     });
-    router.push("/");
+    router.push("/search");
   }
 
   return (
@@ -257,5 +267,3 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
-
-    

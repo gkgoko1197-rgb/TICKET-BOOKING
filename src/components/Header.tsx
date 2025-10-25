@@ -1,9 +1,17 @@
+
+"use client";
+
 import Link from "next/link";
-import { Home, Plane, Car, Sparkles, Building, CircleHelp, Bell } from "lucide-react";
+import { Home, Plane, Car, Sparkles, Building, CircleHelp, Bell, Ticket } from "lucide-react";
 import { Button } from "./ui/button";
+import { useBooking } from "@/context/BookingContext";
+import BookingsSidebar from "./BookingsSidebar";
 
 export default function Header() {
+  const { setSidebarOpen, hasNewBookings } = useBooking();
+
   return (
+    <>
     <header className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="py-3 flex justify-between items-center">
@@ -19,7 +27,20 @@ export default function Header() {
               <Button variant="ghost" className="hover:bg-white/10">
                   <Bell className="mr-2"/>
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary">List your property</Button>
+              <Button 
+                variant="outline" 
+                className="relative bg-transparent border-white text-white hover:bg-white hover:text-primary"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Ticket className="mr-2"/>
+                My Bookings
+                {hasNewBookings && (
+                    <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+                    </span>
+                )}
+              </Button>
               <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Register</Button>
               <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Sign In</Button>
           </div>
@@ -60,5 +81,7 @@ export default function Header() {
           </div>
         </div>
     </header>
+    <BookingsSidebar />
+    </>
   );
 }
