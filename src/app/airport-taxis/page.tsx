@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +38,12 @@ import {
   ArrowDown
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { taxiDrivers } from "@/lib/taxis";
+import TaxiBookingDialog from "@/components/TaxiBookingDialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+
 
 const taxiSearchSchema = z.object({
     tripType: z.enum(["one-way", "return"]),
@@ -46,6 +52,8 @@ const taxiSearchSchema = z.object({
     date: z.date({ required_error: "Date is required" }),
     time: z.string({ required_error: "Time is required" }),
     passengers: z.string().min(1, "Number of passengers is required"),
+    isDriverAgeRestricted: z.boolean(),
+    age: z.string().optional(),
 });
 
 const features = [
@@ -88,7 +96,9 @@ const timeOptions = Array.from({ length: 48 }, (_, i) => {
 });
 
 export default function AirportTaxisPage() {
-    const { toast } = useToast();
+    const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
+    const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
+
     const form = useForm<z.infer<typeof taxiSearchSchema>>({
         resolver: zodResolver(taxiSearchSchema),
         defaultValues: {
@@ -97,15 +107,23 @@ export default function AirportTaxisPage() {
             to: "",
             time: "12:00",
             passengers: "1",
+            isDriverAgeRestricted: true,
+            age: '30-65',
         },
     });
 
+    const drivers = useMemo(() => {
+        const allDrivers = [...taxiDrivers].sort(() => 0.5 - Math.random());
+        if (isDriverAgeRestricted) {
+          return allDrivers.filter(d => d.age >= 30 && d.age <= 65);
+        }
+        return allDrivers;
+      }, [isDriverAgeRestricted, isTaxiDialogOpen]);
+
+
     function onSearch(data: z.infer<typeof taxiSearchSchema>) {
         console.log(data);
-        toast({
-            title: "Search Submitted",
-            description: "Taxi search functionality is not yet implemented.",
-        });
+        setIsTaxiDialogOpen(true);
     }
 
     return (
@@ -173,12 +191,49 @@ export default function AirportTaxisPage() {
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><Users className="mr-2"/><SelectValue /></SelectTrigger></FormControl>
                                                 <SelectContent>{Array.from({length: 8}, (_,i)=>i+1).map(p => <SelectItem key={p} value={String(p)}>{p}</SelectItem>)}</SelectContent></Select></FormItem>
                                             )} />
-                                            <Button type="submit" className="w-full lg:w-auto self-end">
-                                                <Car className="mr-2 h-4 w-4" />
-                                                Book a Taxi
-                                            </Button>
+                                            <Dialog open={isTaxiDialogOpen} onOpenChange={setIsTaxiDialogOpen}>
+                                                <DialogTrigger asChild>
+                                                    <Button type="submit" className="w-full lg:w-auto self-end">
+                                                        <Car className="mr-2 h-4 w-4" />
+                                                        Book a Taxi
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="sm:max-w-md">
+                                                    <DialogHeader>
+                                                        <DialogTitle className="font-headline">Available Taxis</DialogTitle>
+                                                    </DialogHeader>
+                                                    <TaxiBookingDialog drivers={drivers} />
+                                                </DialogContent>
+                                            </Dialog>
                                         </div>
                                     </div>
+                                    <FormField
+                                        control={form.control}
+                                        name="isDriverAgeRestricted"
+                                        render={({ field }) => (
+                                            <FormItem className="flex items-center space-x-2">
+                                                <FormControl>
+                                                    <Checkbox checked={field.value} onCheckedChange={(checked) => { field.onChange(checked); setIsDriverAgeRestricted(checked as boolean); }} id="driver-age"/>
+                                                </FormControl>
+                                                <Label htmlFor="driver-age" className="font-normal">Driver's age is between 30 and 65</Label>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    {!isDriverAgeRestricted && (
+                                        <div className="max-w-xs">
+                                            <FormField
+                                                control={form.control}
+                                                name="age"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Driver's Age</FormLabel>
+                                                        <FormControl><Input placeholder="e.g. 25" {...field} /></FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    )}
                                 </form>
                             </Form>
                         </CardContent>
