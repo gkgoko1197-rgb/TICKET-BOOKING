@@ -9,7 +9,7 @@ import * as z from "zod";
 import { format } from "date-fns";
 import {
   Plane,
-  ArrowRight,
+  ArrowLeftRight,
   Calendar as CalendarIcon,
   Users,
   Search,
@@ -102,6 +102,13 @@ export default function FlightsPage() {
     // Handle form submission
   }
 
+  const handleSwap = () => {
+    const from = form.getValues("from");
+    const to = form.getValues("to");
+    form.setValue("from", to);
+    form.setValue("to", from);
+  };
+
   return (
     <div className="flex flex-col">
       <section className="relative bg-primary/90 text-white py-12 -mt-1">
@@ -168,8 +175,8 @@ export default function FlightsPage() {
                         </FormItem>
                       )}
                     />
-                     <Button type="button" variant="outline" size="icon" className="hidden md:block self-center mx-auto h-10 w-10">
-                        <ArrowRight className="h-4 w-4" />
+                     <Button type="button" variant="outline" size="icon" className="hidden md:block self-center mx-auto h-10 w-10" onClick={handleSwap}>
+                        <ArrowLeftRight className="h-4 w-4" />
                      </Button>
                     <FormField
                       control={form.control}
