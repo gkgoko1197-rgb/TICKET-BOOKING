@@ -42,9 +42,6 @@ export default function Header() {
                 )}
               </Button>
               <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
-                <Link href="/signin">Register</Link>
-              </Button>
-              <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
                 <Link href="/signin">Sign In</Link>
               </Button>
           </div>
@@ -89,3 +86,5 @@ export default function Header() {
     </>
   );
 }
+
+    
