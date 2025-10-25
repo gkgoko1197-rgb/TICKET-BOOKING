@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Plane, Car, Sparkles, Building, CircleHelp, Bell, Ticket } from "lucide-react";
+import { Home, Plane, Car, Sparkles, Building, CircleHelp, Ticket } from "lucide-react";
 import { Button } from "./ui/button";
 import { useBooking } from "@/context/BookingContext";
 import BookingsSidebar from "./BookingsSidebar";
