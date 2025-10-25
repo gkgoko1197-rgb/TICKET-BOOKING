@@ -24,6 +24,9 @@ const bookingSchema = z.object({
   age: z.coerce.number().min(1, "Age is required"),
   phoneNumber: z.string().min(10, "A valid phone number is required"),
   email: z.string().email("A valid email is required"),
+  flightName: z.string(),
+  departureTime: z.string(),
+  arrivalTime: z.string(),
 });
 
 type BookingFormValues = z.infer<typeof bookingSchema>;
@@ -45,6 +48,9 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
       age: 18,
       phoneNumber: "",
       email: "",
+      flightName: flightName,
+      departureTime: "08:00 AM",
+      arrivalTime: "10:30 AM",
     },
   });
 
@@ -56,7 +62,7 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
     
     toast({
       title: "Booking Successful!",
-      description: `Your seat on ${flightName} has been confirmed.`,
+      description: `Your seat on ${data.flightName} has been confirmed.`,
     });
     onBookingSuccess();
   }
@@ -134,11 +140,49 @@ export default function FlightBookingForm({ flightName, onBookingSuccess }: Flig
             />
         </div>
         
-        <div className="rounded-md bg-muted p-3">
-            <p className="text-sm font-semibold">Flight Details</p>
-            <p className="text-sm text-muted-foreground">Flight: {flightName}</p>
-            <p className="text-sm text-muted-foreground">Departure: 08:00 AM</p>
-            <p className="text-sm text-muted-foreground">Arrival: 10:30 AM</p>
+        <div className="space-y-4 rounded-md bg-muted p-3">
+            <h4 className="text-sm font-semibold">Flight Details</h4>
+            <FormField
+                control={form.control}
+                name="flightName"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Flight</FormLabel>
+                    <FormControl>
+                    <Input readOnly {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <div className="grid grid-cols-2 gap-4">
+                <FormField
+                    control={form.control}
+                    name="departureTime"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Departure</FormLabel>
+                        <FormControl>
+                        <Input readOnly {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="arrivalTime"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Arrival</FormLabel>
+                        <FormControl>
+                        <Input readOnly {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+            </div>
         </div>
         
         <Button type="submit" className="w-full" disabled={isLoading}>
