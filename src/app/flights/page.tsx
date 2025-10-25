@@ -175,8 +175,8 @@ export default function FlightsPage() {
                         </FormItem>
                       )}
                     />
-                     <Button type="button" variant="outline" size="icon" className="hidden md:block self-center mx-auto h-10 w-10" onClick={handleSwap}>
-                        <ArrowLeftRight className="h-4 w-4" />
+                     <Button type="button" variant="outline" size="icon" className="hidden md:block self-center mx-auto h-10 w-10 bg-white hover:bg-gray-100" onClick={handleSwap}>
+                        <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
                      </Button>
                     <FormField
                       control={form.control}
