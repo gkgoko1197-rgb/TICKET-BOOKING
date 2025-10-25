@@ -252,7 +252,7 @@ export default function SearchForm() {
                   </PopoverContent>
                   </Popover>
               </div>
-              <Button type="submit" size="lg" className="h-auto text-lg font-bold w-full md:w-auto px-10 rounded-none bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button type="submit" size="lg" className="h-auto text-lg font-bold w-full md:w-auto px-8 rounded-none bg-accent hover:bg-accent/90 text-accent-foreground">
                 <BedDouble className="h-6 w-6 md:hidden mr-2" />
                 Book Hotel
               </Button>
