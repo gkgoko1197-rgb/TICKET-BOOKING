@@ -41,8 +41,12 @@ export default function Header() {
                     </span>
                 )}
               </Button>
-              <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Register</Button>
-              <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">Sign In</Button>
+              <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
+                <Link href="/signin">Register</Link>
+              </Button>
+              <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
+                <Link href="/signin">Sign In</Link>
+              </Button>
           </div>
         </div>
         <div className="pb-2">
@@ -59,19 +63,19 @@ export default function Header() {
                           Flights
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
                       <Link href="/car-rentals">
                           <Car className="mr-2" />
                           Car rentals
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
                       <Link href="/attractions">
                           <Sparkles className="mr-2" />
                           Attractions
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
                       <Link href="/airport-taxis">
                           <Building className="mr-2" />
                           Airport taxis
