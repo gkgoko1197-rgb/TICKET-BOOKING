@@ -3,7 +3,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
@@ -30,7 +30,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import {
   MapPin,
   Calendar as CalendarIcon,
-  Search,
   ThumbsUp,
   Award,
   ShieldCheck,
@@ -39,6 +38,8 @@ import {
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useSearchParams } from "next/navigation";
+import React from 'react';
 
 const searchSchema = z.object({
   pickupLocation: z.string().min(1, "Pick-up location is required"),
@@ -97,8 +98,10 @@ const popularDestinations = [
     { name: 'San Diego', locations: 87, price: 60, imageUrl: 'https://picsum.photos/seed/sandiego/200/150', hint: 'city waterfront' },
 ];
 
+function CarRentalPageContent() {
+  const searchParams = useSearchParams();
+  const pickupLocation = searchParams.get('pickupLocation');
 
-export default function CarRentalPage() {
   const [differentDropoff, setDifferentDropoff] = useState(false);
   const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
   const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
@@ -106,7 +109,7 @@ export default function CarRentalPage() {
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      pickupLocation: "New York, NY",
+      pickupLocation: pickupLocation || "New York, NY",
       differentDropoff: false,
       pickupTime: '10:00',
       dropoffTime: '10:00',
@@ -401,4 +404,13 @@ export default function CarRentalPage() {
       </div>
     </div>
   );
+}
+
+
+export default function CarRentalPage() {
+    return (
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <CarRentalPageContent />
+        </React.Suspense>
+    )
 }

@@ -39,6 +39,7 @@ import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import FlightBookingForm from "@/components/FlightBookingForm";
+import { useSearchParams } from "next/navigation";
 
 
 const flightSearchSchema = z.object({
@@ -92,7 +93,10 @@ const flightNames = [
     "Galaxy Wings", "Phoenix Air", "Stratus Flights", "Odyssey Airlines"
 ];
 
-export default function FlightsPage() {
+function FlightPageContent() {
+  const searchParams = useSearchParams();
+  const fromLocation = searchParams.get('from');
+
   const [isClient, setIsClient] = useState(false);
   const [randomFlight, setRandomFlight] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -105,7 +109,7 @@ export default function FlightsPage() {
     resolver: zodResolver(flightSearchSchema),
     defaultValues: {
       tripType: "return",
-      from: "New York (NYC)",
+      from: fromLocation || "New York (NYC)",
       to: "",
       adults: 1,
       children: 0,
@@ -386,4 +390,12 @@ export default function FlightsPage() {
       </div>
     </div>
   );
+}
+
+export default function FlightsPage() {
+    return (
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <FlightPageContent />
+        </React.Suspense>
+    )
 }

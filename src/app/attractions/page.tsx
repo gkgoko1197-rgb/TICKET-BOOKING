@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Landmark, Mountain, Palmtree, X } from 'lucide-react';
+import { Search, MapPin, Landmark, Mountain, Palmtree, X, Plane, Car } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import Link from 'next/link';
 
 
 const topDestinations = [
@@ -186,7 +188,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 type Destination = (typeof allDestinations)[0];
 
-const DestinationGrid = ({ destinations, emptyText = "No destinations found." }: { destinations: Destination[], emptyText?: string }) => {
+const DestinationGrid = ({ destinations, emptyText = "No destinations found.", onDestinationClick }: { destinations: Destination[], emptyText?: string, onDestinationClick: (dest: Destination) => void; }) => {
     if (destinations.length === 0) {
         return (
             <div className="text-center text-muted-foreground py-10">
@@ -197,8 +199,8 @@ const DestinationGrid = ({ destinations, emptyText = "No destinations found." }:
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {destinations.map((dest) => (
-            <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
-              <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
+            <button onClick={() => onDestinationClick(dest)} key={dest.name}>
+              <Card className="overflow-hidden group hover:shadow-lg transition-shadow text-left h-full">
                   <div className="relative aspect-square">
                       <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -208,7 +210,7 @@ const DestinationGrid = ({ destinations, emptyText = "No destinations found." }:
                       </div>
                   </div>
               </Card>
-            </a>
+            </button>
           ))}
         </div>
     );
@@ -219,6 +221,8 @@ export default function AttractionsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Destination[] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const categorizedDestinations = useMemo(() => {
     if (!activeCategory) return null;
@@ -227,6 +231,10 @@ export default function AttractionsPage() {
     return shuffled.slice(0, count);
   }, [activeCategory]);
 
+  const handleDestinationClick = (dest: Destination) => {
+    setSelectedDestination(dest);
+    setIsDialogOpen(true);
+  };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -243,6 +251,7 @@ export default function AttractionsPage() {
   const handleCategoryClick = (categoryName: string) => {
     if (activeCategory === categoryName) {
         setActiveCategory(null); // Deselect if clicking the same category
+        setSearchResults(null);
     } else {
         setActiveCategory(categoryName);
         setSearchResults(null);
@@ -296,15 +305,15 @@ export default function AttractionsPage() {
             <h2 className="text-2xl font-headline font-bold mb-4">Top destinations for attractions</h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
               {topDestinations.map(dest => (
-                <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
-                    <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
+                 <button onClick={() => handleDestinationClick(dest)} key={dest.name} className="w-full">
+                    <Card className="overflow-hidden group hover:shadow-lg transition-shadow text-left h-full">
                         <div className="relative aspect-[3/4]">
                             <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                             <h3 className="absolute bottom-2 left-2 text-white font-bold text-base">{dest.name}</h3>
                         </div>
                     </Card>
-                </a>
+                </button>
               ))}
             </div>
           </section>
@@ -334,8 +343,8 @@ export default function AttractionsPage() {
                             <X className="mr-2 h-4 w-4" /> Clear
                         </Button>
                     </div>
-                    {searchResults !== null && <DestinationGrid destinations={searchResults} emptyText={`No destinations found for "${searchQuery}".`} />}
-                    {categorizedDestinations && <DestinationGrid destinations={categorizedDestinations} />}
+                    {searchResults !== null && <DestinationGrid destinations={searchResults} emptyText={`No destinations found for "${searchQuery}".`} onDestinationClick={handleDestinationClick} />}
+                    {categorizedDestinations && <DestinationGrid destinations={categorizedDestinations} onDestinationClick={handleDestinationClick} />}
                 </div>
             ) : (
                 <>
@@ -352,25 +361,25 @@ export default function AttractionsPage() {
                     <TabsTrigger value="south-america">South America</TabsTrigger>
                 </TabsList>
                 <TabsContent value="all">
-                    <DestinationGrid destinations={allDestinations} />
+                    <DestinationGrid destinations={allDestinations} onDestinationClick={handleDestinationClick} />
                 </TabsContent>
                 <TabsContent value="europe">
-                    <DestinationGrid destinations={europeDestinations} />
+                    <DestinationGrid destinations={europeDestinations} onDestinationClick={handleDestinationClick} />
                 </TabsContent>
                 <TabsContent value="north-america">
-                    <DestinationGrid destinations={northAmericaDestinations} />
+                    <DestinationGrid destinations={northAmericaDestinations} onDestinationClick={handleDestinationClick} />
                 </TabsContent>
                 <TabsContent value="asia">
-                    <DestinationGrid destinations={asiaDestinations} />
+                    <DestinationGrid destinations={asiaDestinations} onDestinationClick={handleDestinationClick} />
                     </TabsContent>
                     <TabsContent value="africa">
-                        <DestinationGrid destinations={africaDestinations} />
+                        <DestinationGrid destinations={africaDestinations} onDestinationClick={handleDestinationClick} />
                     </TabsContent>
                     <TabsContent value="oceania">
-                        <DestinationGrid destinations={oceaniaDestinations} />
+                        <DestinationGrid destinations={oceaniaDestinations} onDestinationClick={handleDestinationClick} />
                     </TabsContent>
                     <TabsContent value="south-america">
-                        <DestinationGrid destinations={southAmericaDestinations} />
+                        <DestinationGrid destinations={southAmericaDestinations} onDestinationClick={handleDestinationClick} />
                     </TabsContent>
                 </Tabs>
                 </>
@@ -379,8 +388,30 @@ export default function AttractionsPage() {
 
         </div>
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+              <DialogHeader>
+                  <DialogTitle>Book your next trip from {selectedDestination?.name}</DialogTitle>
+                  <DialogDescription>
+                      Choose whether to book a flight or a car for your trip.
+                  </DialogDescription>
+              </DialogHeader>
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                  <Button asChild variant="outline" size="lg">
+                      <Link href={`/flights?from=${encodeURIComponent(selectedDestination?.name || 'London')}`}>
+                          <Plane className="mr-2"/>
+                          Book a flight
+                      </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                        <Link href={`/car-rentals?pickupLocation=${encodeURIComponent(selectedDestination?.name || '')}`}>
+                            <Car className="mr-2"/>
+                           Book a car
+                        </Link>
+                  </Button>
+              </div>
+          </DialogContent>
+      </Dialog>
     </div>
   );
 }
-
-    
