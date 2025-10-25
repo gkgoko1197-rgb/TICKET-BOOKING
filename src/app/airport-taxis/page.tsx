@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react";
@@ -172,7 +173,10 @@ export default function AirportTaxisPage() {
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><Users className="mr-2"/><SelectValue /></SelectTrigger></FormControl>
                                                 <SelectContent>{Array.from({length: 8}, (_,i)=>i+1).map(p => <SelectItem key={p} value={String(p)}>{p}</SelectItem>)}</SelectContent></Select></FormItem>
                                             )} />
-                                            <Button type="submit" className="w-full lg:w-auto self-end">Search</Button>
+                                            <Button type="submit" className="w-full lg:w-auto self-end">
+                                                <Car className="mr-2 h-4 w-4" />
+                                                Book a Taxi
+                                            </Button>
                                         </div>
                                     </div>
                                 </form>
