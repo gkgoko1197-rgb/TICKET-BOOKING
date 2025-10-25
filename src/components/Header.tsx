@@ -33,7 +33,7 @@ export default function Header() {
                       </Link>
                   </Button>
                   <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
-                      <Link href="#">
+                      <Link href="/flights">
                           <Plane className="mr-2" />
                           Flights
                       </Link>
