@@ -87,6 +87,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       title: accommodation.name,
       details: `${accommodation.location.city}`,
       date: new Date().toISOString(),
+      price: accommodation.price,
     });
 
     setIsLoading(false);

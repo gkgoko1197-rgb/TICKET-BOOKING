@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -45,6 +45,8 @@ export default function FlightBookingForm({ flightName, from, to, onBookingSucce
   const { toast } = useToast();
   const { addBooking } = useBooking();
   const [isLoading, setIsLoading] = useState(false);
+  
+  const price = useMemo(() => Math.floor(Math.random() * (750 - 250 + 1)) + 250, [flightName, from, to]);
 
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
@@ -73,6 +75,7 @@ export default function FlightBookingForm({ flightName, from, to, onBookingSucce
       title: data.flightName,
       details: `From ${data.from} to ${data.to}`,
       date: new Date().toISOString(),
+      price: price
     });
 
     setIsLoading(false);
@@ -158,7 +161,10 @@ export default function FlightBookingForm({ flightName, from, to, onBookingSucce
         </div>
         
         <div className="space-y-4 rounded-md bg-muted p-3">
-          <h4 className="text-sm font-semibold">Flight Details</h4>
+          <div className="flex justify-between items-center">
+            <h4 className="text-sm font-semibold">Flight Details</h4>
+            <div className="text-lg font-bold text-primary">${price}</div>
+          </div>
            <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}

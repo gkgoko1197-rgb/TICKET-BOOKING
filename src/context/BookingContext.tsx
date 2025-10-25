@@ -9,11 +9,13 @@ type Booking = {
   title: string;
   details: string;
   date: string;
+  price: number;
 };
 
 interface BookingContextType {
   bookings: Booking[];
   addBooking: (booking: Booking) => void;
+  removeBooking: (bookingId: string) => void;
   isSidebarOpen: boolean;
   setSidebarOpen: (isOpen: boolean) => void;
   hasNewBookings: boolean;
@@ -32,12 +34,16 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     setHasNewBookings(true);
   };
 
+  const removeBooking = (bookingId: string) => {
+    setBookings(prev => prev.filter(b => b.id !== bookingId));
+  }
+
   const markAsViewed = () => {
     setHasNewBookings(false);
   };
 
   return (
-    <BookingContext.Provider value={{ bookings, addBooking, isSidebarOpen, setSidebarOpen, hasNewBookings, markAsViewed }}>
+    <BookingContext.Provider value={{ bookings, addBooking, removeBooking, isSidebarOpen, setSidebarOpen, hasNewBookings, markAsViewed }}>
       {children}
     </BookingContext.Provider>
   );
