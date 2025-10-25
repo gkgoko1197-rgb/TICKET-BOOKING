@@ -249,8 +249,9 @@ export default function Home() {
                     <h3 className="font-headline font-bold text-xl mb-2">Sign in, save money</h3>
                     <p className="text-muted-foreground mb-4">Save 10% or more at participating properties – just look for the blue Genius label</p>
                     <div className="flex items-center gap-4">
-                        <Button className="bg-accent hover:bg-accent/90">Sign in</Button>
-                        <Button variant="ghost" className="text-accent hover:bg-accent/10">Register</Button>
+                        <Button asChild className="bg-accent hover:bg-accent/90">
+                           <Link href="/signin">Sign in</Link>
+                        </Button>
                     </div>
                 </div>
                 <div className="hidden sm:block">
