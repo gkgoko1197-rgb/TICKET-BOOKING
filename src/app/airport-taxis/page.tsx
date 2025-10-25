@@ -44,6 +44,7 @@ import TaxiBookingDialog from "@/components/TaxiBookingDialog";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useBooking } from "@/context/BookingContext";
 
 
 const taxiSearchSchema = z.object({
@@ -100,6 +101,7 @@ export default function AirportTaxisPage() {
     const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
     const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
     const [bookingDetails, setBookingDetails] = useState<{ from: string; to: string } | null>(null);
+    const { addBooking } = useBooking();
 
     const form = useForm<z.infer<typeof taxiSearchSchema>>({
         resolver: zodResolver(taxiSearchSchema),
@@ -126,6 +128,18 @@ export default function AirportTaxisPage() {
     function onSearch(data: z.infer<typeof taxiSearchSchema>) {
         setBookingDetails({ from: data.from, to: data.to });
         setIsTaxiDialogOpen(true);
+    }
+
+    const handleBookingConfirm = (driver: (typeof taxiDrivers)[0]) => {
+        const price = Math.floor(Math.random() * (100 - 30 + 1)) + 30;
+        addBooking({
+          id: `taxi-${Date.now()}`,
+          type: 'taxi',
+          title: `Taxi with ${driver.name}`,
+          details: `From ${bookingDetails?.from} to ${bookingDetails?.to}`,
+          date: new Date().toISOString(),
+          price,
+        });
     }
 
     return (
@@ -205,7 +219,12 @@ export default function AirportTaxisPage() {
                                                     <DialogHeader>
                                                         <DialogTitle className="font-headline">Available Taxis</DialogTitle>
                                                     </DialogHeader>
-                                                    <TaxiBookingDialog drivers={drivers} bookingDetails={bookingDetails} />
+                                                    <TaxiBookingDialog 
+                                                        drivers={drivers} 
+                                                        bookingDetails={bookingDetails} 
+                                                        onConfirm={handleBookingConfirm}
+                                                        bookingType="taxi"
+                                                    />
                                                 </DialogContent>
                                             </Dialog>
                                         </div>
@@ -324,5 +343,3 @@ export default function AirportTaxisPage() {
         </div>
     )
 }
-
-    

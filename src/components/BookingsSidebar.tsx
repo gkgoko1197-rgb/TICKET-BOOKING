@@ -9,10 +9,17 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "./ui/card";
-import { Plane, BedDouble, X } from "lucide-react";
+import { Plane, BedDouble, X, Car } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
+
+const bookingIcons = {
+    flight: <Plane />,
+    accommodation: <BedDouble />,
+    car: <Car />,
+    taxi: <Car />,
+}
 
 export default function BookingsSidebar() {
   const { isSidebarOpen, setSidebarOpen, bookings, markAsViewed, removeBooking } = useBooking();
@@ -47,7 +54,7 @@ export default function BookingsSidebar() {
             bookings.map((booking) => (
               <Card key={booking.id}>
                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 p-4">
-                    {booking.type === 'flight' ? <Plane /> : <BedDouble />}
+                    {bookingIcons[booking.type]}
                     <div className="flex-grow">
                         <CardTitle className="text-lg">{booking.title}</CardTitle>
                         <p className="text-sm text-muted-foreground">

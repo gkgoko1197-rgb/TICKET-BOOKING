@@ -6,25 +6,27 @@ import { TaxiDriver } from "@/lib/taxis";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Phone, Star, User, Car, X, Check, MapPin, ArrowRight } from "lucide-react";
+import { Phone, Star, User, Car, X, Check, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "./ui/separator";
 
 interface TaxiBookingDialogProps {
     drivers: TaxiDriver[];
     bookingDetails: { from: string; to: string } | null;
+    onConfirm: (driver: TaxiDriver) => void;
+    bookingType: 'car' | 'taxi';
 }
 
-export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDetails }: TaxiBookingDialogProps) {
+export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDetails, onConfirm, bookingType }: TaxiBookingDialogProps) {
     const { toast } = useToast();
-    const [drivers, setDrivers] = useState(initialDrivers);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleConfirm = (driver: TaxiDriver) => {
         toast({
             title: "Booking Confirmed!",
-            description: `You have booked a ride with ${driver.name}.`,
+            description: `You have booked a ${bookingType} with ${driver.name}.`,
         });
+        onConfirm(driver);
         showNextDriver();
     };
 
@@ -41,7 +43,7 @@ export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDeta
         setCurrentIndex(prevIndex => prevIndex + 1);
     };
 
-    const currentDriver = drivers[currentIndex];
+    const currentDriver = initialDrivers[currentIndex];
 
     if (!currentDriver) {
         return (
@@ -57,7 +59,7 @@ export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDeta
                 <Card key={currentDriver.id}>
                     <CardContent className="p-4 flex items-center gap-4">
                         <Avatar className="h-16 w-16">
-                            <AvatarImage src={`https://i.pravatar.cc/150?u=${currentDriver.id}`} alt={currentDriver.name} data-ai-hint="driver portrait" />
+                            <AvatarImage src={currentDriver.imageUrl} alt={currentDriver.name} data-ai-hint="driver portrait" />
                             <AvatarFallback>{currentDriver.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-grow">
@@ -103,5 +105,3 @@ export default function TaxiBookingDialog({ drivers: initialDrivers, bookingDeta
         </div>
     );
 }
-
-    

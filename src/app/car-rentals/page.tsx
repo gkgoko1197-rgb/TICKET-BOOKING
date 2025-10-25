@@ -40,6 +40,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useSearchParams } from "next/navigation";
 import React from 'react';
+import { useBooking } from "@/context/BookingContext";
 
 const searchSchema = z.object({
   pickupLocation: z.string().min(1, "Pick-up location is required"),
@@ -105,7 +106,9 @@ function CarRentalPageContent() {
   const [differentDropoff, setDifferentDropoff] = useState(false);
   const [isDriverAgeRestricted, setIsDriverAgeRestricted] = useState(true);
   const [isTaxiDialogOpen, setIsTaxiDialogOpen] = useState(false);
-  
+  const { addBooking } = useBooking();
+  const [bookingDetails, setBookingDetails] = useState<{ from: string; to: string } | null>(null);
+
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
@@ -128,8 +131,20 @@ function CarRentalPageContent() {
 
 
   function onSearchSubmit(values: z.infer<typeof searchSchema>) {
-    console.log(values);
+    setBookingDetails({ from: values.pickupLocation, to: values.dropoffLocation || values.pickupLocation });
     setIsTaxiDialogOpen(true);
+  }
+
+  const handleBookingConfirm = (driver: (typeof taxiDrivers)[0]) => {
+    const price = Math.floor(Math.random() * (100 - 30 + 1)) + 30;
+    addBooking({
+      id: `car-${Date.now()}`,
+      type: 'car',
+      title: `${driver.car.make} ${driver.car.model}`,
+      details: `Rented from ${bookingDetails?.from}`,
+      date: new Date().toISOString(),
+      price,
+    });
   }
 
   return (
@@ -307,14 +322,19 @@ function CarRentalPageContent() {
                         <DialogTrigger asChild>
                             <Button type="submit" className="w-full md:w-auto h-12 px-12 bg-accent text-lg">
                               <Car className="mr-2"/>
-                              Book a Taxi
+                              Search
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[600px]">
                             <DialogHeader>
-                                <DialogTitle className="font-headline">Available Taxis</DialogTitle>
+                                <DialogTitle className="font-headline">Available Cars</DialogTitle>
                             </DialogHeader>
-                            <TaxiBookingDialog drivers={drivers} />
+                            <TaxiBookingDialog 
+                              drivers={drivers} 
+                              bookingDetails={bookingDetails} 
+                              onConfirm={handleBookingConfirm}
+                              bookingType="car"
+                            />
                         </DialogContent>
                     </Dialog>
                   </div>

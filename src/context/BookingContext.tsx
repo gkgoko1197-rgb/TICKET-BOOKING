@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Booking = {
   id: string;
-  type: 'flight' | 'accommodation';
+  type: 'flight' | 'accommodation' | 'car' | 'taxi';
   title: string;
   details: string;
   date: string;
