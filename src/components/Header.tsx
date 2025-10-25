@@ -17,7 +17,7 @@ export default function Header() {
         <div className="py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-headline font-bold">
-              StayFinder
+              Gokovia
             </span>
           </Link>
           <div className="flex items-center gap-4">

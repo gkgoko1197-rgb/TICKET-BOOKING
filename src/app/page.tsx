@@ -23,7 +23,7 @@ const trendingDestinations = [
     { name: 'New Delhi', imageUrl: 'https://picsum.photos/seed/delhi/800/600', hint: 'Delhi street market' },
 ];
 
-const whyStayFinder = [
+const whyGokovia = [
     {
       icon: <CalendarCheck className="w-8 h-8 text-accent" />,
       title: 'Book now, pay at the property',
@@ -128,9 +128,9 @@ export default function Home() {
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-5xl pt-0">
-        <h2 className="text-3xl font-headline font-bold mb-6">Why StayFinder?</h2>
+        <h2 className="text-3xl font-headline font-bold mb-6">Why Gokovia?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {whyStayFinder.map((item) => (
+          {whyGokovia.map((item) => (
             <Card key={item.title} className="p-6 flex flex-col items-start text-left">
                 {item.icon}
                 <h3 className="font-headline font-bold mt-4 mb-2 text-lg">{item.title}</h3>

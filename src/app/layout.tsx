@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import { BookingProvider } from "@/context/BookingContext";
 
 // export const metadata: Metadata = {
-//   title: "StayFinder",
+//   title: "Gokovia",
 //   description: "Find your next stay, powered by AI.",
 // };
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>StayFinder</title>
+        <title>Gokovia</title>
         <meta name="description" content="Find your next stay, powered by AI." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

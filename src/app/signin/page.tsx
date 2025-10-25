@@ -141,7 +141,7 @@ export default function SignInPage() {
                     <CardFooter className="flex-col items-start text-xs text-muted-foreground pt-6">
                         <p>By signing in or creating an account, you agree with our <Link href="#" className="text-primary hover:underline">Terms & Conditions</Link> and <Link href="#" className="text-primary hover:underline">Privacy Statement</Link></p>
                         <p className="mt-4 text-center w-full">All rights reserved.</p>
-                        <p className="text-center w-full">Copyright (2006-2025) – StayFinder.com™</p>
+                        <p className="text-center w-full">Copyright (2006-2025) – Gokovia.com™</p>
                     </CardFooter>
                 </Card>
             </div>

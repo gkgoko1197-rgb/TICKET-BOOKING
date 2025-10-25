@@ -108,9 +108,9 @@ export default function HelpPage() {
           </CardHeader>
           <CardContent className="text-blue-700">
             <p>
-              Please check your payment policy. StayFinder will never ask for
+              Please check your payment policy. Gokovia will never ask for
               your account or payment info by phone, email or chat (e.g.
-              WhatsApp). If in doubt, please report it to StayFinder.
+              WhatsApp). If in doubt, please report it to Gokovia.
             </p>
             <Button variant="link" className="p-0 h-auto mt-1 text-blue-700">
               Learn more
