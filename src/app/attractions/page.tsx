@@ -6,10 +6,8 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Ticket, Landmark, Mountain, Palmtree, X } from 'lucide-react';
-import Link from 'next/link';
+import { Search, MapPin, Landmark, Mountain, Palmtree, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRouter } from 'next/navigation';
 
 
 const topDestinations = [
@@ -218,13 +216,12 @@ const DestinationGrid = ({ destinations, emptyText = "No destinations found." }:
 
 
 export default function AttractionsPage() {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Destination[] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const categorizedDestinations = useMemo(() => {
-    if (!activeCategory) return [];
+    if (!activeCategory) return null;
     const shuffled = shuffleArray([...allDestinations]);
     const count = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
     return shuffled.slice(0, count);
@@ -258,7 +255,7 @@ export default function AttractionsPage() {
     setSearchQuery('');
   }
 
-  const isFiltered = activeCategory || searchResults;
+  const isFiltered = activeCategory !== null || searchResults !== null;
 
   return (
     <div className="flex flex-col">
@@ -299,7 +296,7 @@ export default function AttractionsPage() {
             <h2 className="text-2xl font-headline font-bold mb-4">Top destinations for attractions</h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
               {topDestinations.map(dest => (
-                <Link href={`/search?destination=${encodeURIComponent(dest.name)}`} key={dest.name}>
+                <a href={`https://www.google.com/search?q=attractions+in+${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={dest.name}>
                     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
                         <div className="relative aspect-[3/4]">
                             <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={dest.hint} />
@@ -307,7 +304,7 @@ export default function AttractionsPage() {
                             <h3 className="absolute bottom-2 left-2 text-white font-bold text-base">{dest.name}</h3>
                         </div>
                     </Card>
-                </Link>
+                </a>
               ))}
             </div>
           </section>
@@ -337,8 +334,8 @@ export default function AttractionsPage() {
                             <X className="mr-2 h-4 w-4" /> Clear
                         </Button>
                     </div>
-                    {searchResults !== null && <DestinationGrid destinations={searchResults} emptyText="No destinations found for your search."/>}
-                    {activeCategory && <DestinationGrid destinations={categorizedDestinations} />}
+                    {searchResults !== null && <DestinationGrid destinations={searchResults} emptyText={`No destinations found for "${searchQuery}".`} />}
+                    {categorizedDestinations && <DestinationGrid destinations={categorizedDestinations} />}
                 </div>
             ) : (
                 <>
