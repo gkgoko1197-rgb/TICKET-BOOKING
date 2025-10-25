@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -174,7 +175,7 @@ export default function FlightsPage() {
                         </FormItem>
                       )}
                     />
-                     <Button type="button" variant="ghost" size="icon" className="hidden md:block self-center mx-auto h-10 w-10 bg-white" onClick={handleSwap}>
+                     <Button type="button" variant="ghost" size="icon" className="hidden md:block self-center mx-auto h-10 w-10 bg-white hover:bg-white" onClick={handleSwap}>
                         <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
                      </Button>
                     <FormField
@@ -356,3 +357,5 @@ export default function FlightsPage() {
     </div>
   );
 }
+
+    
