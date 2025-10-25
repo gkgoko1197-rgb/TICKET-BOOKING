@@ -43,14 +43,14 @@ export default function TaxiBookingDialog({ drivers: initialDrivers }: TaxiBooki
 
     if (!currentDriver) {
         return (
-            <div className="text-center text-muted-foreground py-10 flex flex-col items-center justify-center h-[40vh]">
+            <div className="text-center text-muted-foreground py-10 flex flex-col items-center justify-center min-h-[150px]">
                 <p>No more available drivers match your criteria.</p>
             </div>
         )
     }
 
     return (
-        <div className="h-[40vh] flex items-center justify-center">
+        <div className="flex items-center justify-center">
             <div className="w-full">
                 <Card key={currentDriver.id}>
                     <CardContent className="p-4 flex items-center gap-4">
@@ -84,3 +84,4 @@ export default function TaxiBookingDialog({ drivers: initialDrivers }: TaxiBooki
         </div>
     );
 }
+
