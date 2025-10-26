@@ -2,17 +2,17 @@
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import SearchForm from '@/components/SearchForm';
-import { placeholderImages } from '@/lib/placeholder-images.json';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CalendarCheck, Globe, Headset, ThumbsUp, ArrowRight, Gift } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const propertyTypes = [
-  { name: 'Hotels', image: placeholderImages.find(p => p.id === 'hotel-2'), hint: 'hotel room' },
-  { name: 'Apartments', image: placeholderImages.find(p => p.id === 'apartment-1'), hint: 'modern apartment' },
-  { name: 'Resorts', image: placeholderImages.find(p => p.id === 'resort-1'), hint: 'beach resort' },
-  { name: 'Villas', image: placeholderImages.find(p => p.id === 'villa-1'), hint: 'private villa' },
+  { name: 'Hotels', image: PlaceHolderImages.find(p => p.id === 'hotel-2'), hint: 'hotel room' },
+  { name: 'Apartments', image: PlaceHolderImages.find(p => p.id === 'apartment-1'), hint: 'modern apartment' },
+  { name: 'Resorts', image: PlaceHolderImages.find(p => p.id === 'resort-1'), hint: 'beach resort' },
+  { name: 'Villas', image: PlaceHolderImages.find(p => p.id === 'villa-1'), hint: 'private villa' },
 ];
 
 const trendingDestinations = [
@@ -82,7 +82,7 @@ const offers = [
 ];
 
 export default function Home() {
-  const heroImage = placeholderImages.find(
+  const heroImage = PlaceHolderImages.find(
     img => img.id === 'hero-background'
   )!;
 
