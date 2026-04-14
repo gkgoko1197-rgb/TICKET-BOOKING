@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -54,6 +54,18 @@ export default function SignInPage() {
     const router = useRouter();
     const { login } = useAuth();
     const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+    const [registeredUsers, setRegisteredUsers] = useState<any[]>([]);
+
+    useEffect(() => {
+        const storedUsers = localStorage.getItem('gokovia_all_users');
+        if (storedUsers) {
+            try {
+                setRegisteredUsers(JSON.parse(storedUsers));
+            } catch (e) {
+                console.error("Error parsing users from localStorage", e);
+            }
+        }
+    }, []);
 
     const loginForm = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -66,9 +78,11 @@ export default function SignInPage() {
     });
 
     function onLoginSubmit(values: z.infer<typeof loginSchema>) {
-        if (values.username === "goko" && values.password === "1234") {
+        const foundUser = registeredUsers.find(u => u.username === values.username && u.password === values.password);
+        
+        if ((values.username === "goko" && values.password === "1234") || foundUser) {
             login(values.username);
-            toast({ title: "Successfully logged in!", description: "Welcome back, goko!" });
+            toast({ title: "Successfully logged in!", description: `Welcome back, ${values.username}!` });
             router.push("/");
         } else {
             toast({ 
@@ -80,9 +94,32 @@ export default function SignInPage() {
     }
 
     function onSignupSubmit(values: z.infer<typeof signupSchema>) {
+        // Check if username already exists
+        const exists = registeredUsers.some(u => u.username === values.username);
+        if (exists || values.username === "goko") {
+            toast({ 
+                title: "Registration Failed", 
+                description: "Username already taken. Please choose another.", 
+                variant: "destructive" 
+            });
+            return;
+        }
+
+        const newUser = { 
+            username: values.username, 
+            password: values.password, 
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email
+        };
+        
+        const updatedUsers = [...registeredUsers, newUser];
+        setRegisteredUsers(updatedUsers);
+        localStorage.setItem('gokovia_all_users', JSON.stringify(updatedUsers));
+
         toast({ 
             title: "Account Created Successfully!", 
-            description: `Welcome to Gokovia, ${values.firstName}! You can now login.` 
+            description: `Welcome to Gokovia, ${values.firstName}! You can now login with your new credentials.` 
         });
         setAuthMode("signin");
         loginForm.setValue("username", values.username);
