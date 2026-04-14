@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,11 +12,19 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const formSchema = z.object({
+const loginSchema = z.object({
+  username: z.string().min(1, { message: "Username is required." }),
+  password: z.string().min(1, { message: "Password is required." }),
+});
+
+const signupSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
   lastName: z.string().min(1, { message: "Last name is required." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters." }),
+  password: z.string().min(4, { message: "Password must be at least 4 characters." }),
 });
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -23,7 +32,7 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
         <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
         <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
-d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C42.022,35.222,44,30.032,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+        <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C42.022,35.222,44,30.032,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
     </svg>
 );
 
@@ -42,27 +51,44 @@ const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function SignInPage() {
     const { toast } = useToast();
     const router = useRouter();
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-        },
+    const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+
+    const loginForm = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: { username: "", password: "" },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        toast({
-            title: "Successfully signed in!",
+    const signupForm = useForm<z.infer<typeof signupSchema>>({
+        resolver: zodResolver(signupSchema),
+        defaultValues: { firstName: "", lastName: "", email: "", username: "", password: "" },
+    });
+
+    function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+        if (values.username === "goko" && values.password === "1234") {
+            toast({ title: "Successfully logged in!", description: "Welcome back, goko!" });
+            router.push("/");
+        } else {
+            toast({ 
+                title: "Login Failed", 
+                description: "Invalid username or password. (Hint: goko / 1234)", 
+                variant: "destructive" 
+            });
+        }
+    }
+
+    function onSignupSubmit(values: z.infer<typeof signupSchema>) {
+        toast({ 
+            title: "Account Created Successfully!", 
+            description: `Welcome to Gokovia, ${values.firstName}! You can now sign in.` 
         });
-        router.push("/");
+        setAuthMode("signin");
+        loginForm.setValue("username", values.username);
     }
 
     function handleSocialClick() {
         toast({
             title: "Coming Soon!",
-            description: "This feature is not yet implemented.",
+            description: "Social login features are not yet implemented.",
         })
     }
 
@@ -71,56 +97,113 @@ export default function SignInPage() {
             <div className="w-full max-w-md space-y-8">
                 <Card>
                     <CardHeader className="text-center">
-                        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-                        <CardDescription>Enter your information to create an account.</CardDescription>
+                        <CardTitle className="text-2xl font-bold">Welcome to Gokovia</CardTitle>
+                        <CardDescription>
+                            {authMode === "signin" ? "Enter your credentials to access your account." : "Fill out the form below to create a new account."}
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                                 <div className="grid grid-cols-2 gap-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="firstName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>First Name</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="John" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="lastName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Last Name</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="Doe" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email address</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter your email address" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Continue with email</Button>
-                            </form>
-                        </Form>
+                        <Tabs value={authMode} onValueChange={(v) => setAuthMode(v as any)} className="w-full">
+                            <TabsList className="grid w-full grid-cols-2 mb-6">
+                                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                            </TabsList>
+                            
+                            <TabsContent value="signin">
+                                <Form {...loginForm}>
+                                    <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
+                                        <FormField
+                                            control={loginForm.control}
+                                            name="username"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Username</FormLabel>
+                                                    <FormControl><Input placeholder="e.g. goko" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={loginForm.control}
+                                            name="password"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Password</FormLabel>
+                                                    <FormControl><Input type="password" placeholder="••••" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Sign In</Button>
+                                    </form>
+                                </Form>
+                            </TabsContent>
+
+                            <TabsContent value="signup">
+                                <Form {...signupForm}>
+                                    <form onSubmit={signupForm.handleSubmit(onSignupSubmit)} className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <FormField
+                                                control={signupForm.control}
+                                                name="firstName"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>First Name</FormLabel>
+                                                        <FormControl><Input placeholder="John" {...field} /></FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={signupForm.control}
+                                                name="lastName"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Last Name</FormLabel>
+                                                        <FormControl><Input placeholder="Doe" {...field} /></FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        <FormField
+                                            control={signupForm.control}
+                                            name="email"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Email address</FormLabel>
+                                                    <FormControl><Input placeholder="john@example.com" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={signupForm.control}
+                                            name="username"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Username</FormLabel>
+                                                    <FormControl><Input placeholder="Choose a username" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={signupForm.control}
+                                            name="password"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Password</FormLabel>
+                                                    <FormControl><Input type="password" placeholder="••••" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Create Account</Button>
+                                    </form>
+                                </Form>
+                            </TabsContent>
+                        </Tabs>
 
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
@@ -147,5 +230,3 @@ export default function SignInPage() {
         </div>
     );
 }
-
-    
