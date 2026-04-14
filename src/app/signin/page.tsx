@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -105,7 +104,7 @@ export default function SignInPage() {
                     <CardContent>
                         <Tabs value={authMode} onValueChange={(v) => setAuthMode(v as any)} className="w-full">
                             <TabsList className="grid w-full grid-cols-2 mb-6">
-                                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                                <TabsTrigger value="signin">Login</TabsTrigger>
                                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
                             </TabsList>
                             
@@ -134,7 +133,7 @@ export default function SignInPage() {
                                                 </FormItem>
                                             )}
                                         />
-                                        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Sign In</Button>
+                                        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Login</Button>
                                     </form>
                                 </Form>
                             </TabsContent>

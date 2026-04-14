@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -42,7 +41,7 @@ export default function Header() {
                 )}
               </Button>
               <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
-                <Link href="/signin">Sign In</Link>
+                <Link href="/signin">Login</Link>
               </Button>
           </div>
         </div>
@@ -86,5 +85,3 @@ export default function Header() {
     </>
   );
 }
-
-    
