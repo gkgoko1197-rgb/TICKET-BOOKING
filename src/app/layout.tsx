@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BookingProvider } from "@/context/BookingContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 // export const metadata: Metadata = {
 //   title: "Gokovia",
@@ -36,12 +37,14 @@ export default function RootLayout({
           "min-h-screen bg-background font-body antialiased flex flex-col"
         )}
       >
-        <BookingProvider>
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            <Toaster />
-        </BookingProvider>
+        <AuthProvider>
+          <BookingProvider>
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+              <Toaster />
+          </BookingProvider>
+        </AuthProvider>
       </body>
     </html>
   );

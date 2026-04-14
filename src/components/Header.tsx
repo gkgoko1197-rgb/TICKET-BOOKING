@@ -1,13 +1,16 @@
+
 "use client";
 
 import Link from "next/link";
-import { Home, Plane, Car, Sparkles, Building, CircleHelp, Ticket } from "lucide-react";
+import { Home, Plane, Car, Sparkles, Building, CircleHelp, Ticket, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { useBooking } from "@/context/BookingContext";
+import { useAuth } from "@/context/AuthContext";
 import BookingsSidebar from "./BookingsSidebar";
 
 export default function Header() {
   const { setSidebarOpen, hasNewBookings } = useBooking();
+  const { user, logout } = useAuth();
 
   return (
     <>
@@ -40,9 +43,20 @@ export default function Header() {
                     </span>
                 )}
               </Button>
-              <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
-                <Link href="/signin">Login</Link>
-              </Button>
+              {user ? (
+                <Button 
+                  variant="secondary" 
+                  onClick={logout}
+                  className="bg-white text-primary hover:bg-gray-200"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout ({user.username})
+                </Button>
+              ) : (
+                <Button variant="secondary" asChild className="bg-white text-primary hover:bg-gray-200">
+                  <Link href="/signin">Login</Link>
+                </Button>
+              )}
           </div>
         </div>
         <div className="pb-2">
@@ -59,19 +73,19 @@ export default function Header() {
                           Flights
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
                       <Link href="/car-rentals">
                           <Car className="mr-2" />
                           Car rentals
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
                       <Link href="/attractions">
                           <Sparkles className="mr-2" />
                           Attractions
                       </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="hover-bg-white/10 rounded-full">
+                  <Button variant="ghost" asChild className="hover:bg-white/10 rounded-full">
                       <Link href="/airport-taxis">
                           <Building className="mr-2" />
                           Airport taxis

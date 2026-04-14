@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -12,6 +13,7 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/context/AuthContext";
 
 const loginSchema = z.object({
   username: z.string().min(1, { message: "Username is required." }),
@@ -50,6 +52,7 @@ const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function SignInPage() {
     const { toast } = useToast();
     const router = useRouter();
+    const { login } = useAuth();
     const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
 
     const loginForm = useForm<z.infer<typeof loginSchema>>({
@@ -64,6 +67,7 @@ export default function SignInPage() {
 
     function onLoginSubmit(values: z.infer<typeof loginSchema>) {
         if (values.username === "goko" && values.password === "1234") {
+            login(values.username);
             toast({ title: "Successfully logged in!", description: "Welcome back, goko!" });
             router.push("/");
         } else {
@@ -78,7 +82,7 @@ export default function SignInPage() {
     function onSignupSubmit(values: z.infer<typeof signupSchema>) {
         toast({ 
             title: "Account Created Successfully!", 
-            description: `Welcome to Gokovia, ${values.firstName}! You can now sign in.` 
+            description: `Welcome to Gokovia, ${values.firstName}! You can now login.` 
         });
         setAuthMode("signin");
         loginForm.setValue("username", values.username);
